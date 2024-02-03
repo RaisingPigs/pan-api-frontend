@@ -11,11 +11,21 @@
 @use "./variables.scss" as *;
 
 // 生成指定颜色的明亮/黑暗颜色
-@mixin set-color-mix-level($type, $number, $mode: "light", $mix-color: $color-white) {
+@mixin set-color-mix-level(
+  $type,
+  $number,
+  $mode: "light",
+  $mix-color: $color-white
+) {
   $colors: map.deep-merge(
     (
       $type: (
-        "#{$mode}-#{$number}": mix($mix-color, map.get($colors, $type, "base"), math.percentage(math.div($number, 10)))
+        "#{$mode}-#{$number}":
+          mix(
+            $mix-color,
+            map.get($colors, $type, "base"),
+            math.percentage(math.div($number, 10))
+          )
       )
     ),
     $colors

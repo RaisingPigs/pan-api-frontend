@@ -6,7 +6,12 @@
         <img src="@/assets/layouts/logo-text-2.png" />
       </div>
       <div class="content">
-        <el-form ref="loginFormRef" :model="loginFormData" :rules="loginFormRules" @submit.prevent="handleLogin">
+        <el-form
+          ref="loginFormRef"
+          :model="loginFormData"
+          :rules="loginFormRules"
+          @submit.prevent="handleLogin"
+        >
           <el-form-item prop="username">
             <el-input
               v-model.trim="loginFormData.username"
@@ -28,7 +33,13 @@
               show-password
             />
           </el-form-item>
-          <el-button :loading="loading" type="primary" size="large" native-type="submit">登 录</el-button>
+          <el-button
+            :loading="loading"
+            type="primary"
+            size="large"
+            native-type="submit"
+            >登 录</el-button
+          >
         </el-form>
       </div>
     </div>
@@ -36,28 +47,28 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue"
-import { useRouter } from "vue-router"
-import { useUserStore } from "@/store/modules/user"
-import { type FormInstance, type FormRules } from "element-plus"
-import { User, Lock } from "@element-plus/icons-vue"
-import { type LoginRequestData } from "@/api/login/type"
-import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/modules/user";
+import { type FormInstance, type FormRules } from "element-plus";
+import { User, Lock } from "@element-plus/icons-vue";
+import { type LoginRequestData } from "@/api/login/type";
+import ThemeSwitch from "@/components/ThemeSwitch/index.vue";
 
-const router = useRouter()
+const router = useRouter();
 
 /** 登录表单元素的引用 */
-const loginFormRef = ref<FormInstance | null>(null)
+const loginFormRef = ref<FormInstance | null>(null);
 
 /** 登录按钮 Loading */
-const loading = ref(false)
+const loading = ref(false);
 
 /** 登录表单数据 */
 const loginFormData: LoginRequestData = reactive({
   username: "admin",
   password: "admin",
   code: ""
-})
+});
 /** 登录表单校验规则 */
 const loginFormRules: FormRules = {
   username: [
@@ -69,24 +80,24 @@ const loginFormRules: FormRules = {
     { min: 4, max: 16, message: "长度在 8 到 16 个字符", trigger: "blur" }
   ],
   code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
-}
+};
 
 /** 登录逻辑 */
 const handleLogin = async () => {
-  const valid = await loginFormRef.value?.validate()
+  const valid = await loginFormRef.value?.validate();
   if (!valid) {
-    return
+    return;
   }
-  loading.value = true
+  loading.value = true;
   try {
-    await useUserStore().login(loginFormData)
-    await router.replace({ path: "/" })
+    await useUserStore().login(loginFormData);
+    await router.replace({ path: "/" });
   } catch (err) {
-    loginFormData.password = ""
+    loginFormData.password = "";
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
