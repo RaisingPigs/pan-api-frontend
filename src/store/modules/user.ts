@@ -43,6 +43,10 @@ export const useUserStore = defineStore("user", () => {
   /** 登出 */
   const logout = async () => {
     await reqLogout();
+    logoutReset();
+  };
+
+  const logoutReset = () => {
     resetToken();
     resetRouter();
     _resetTagsView();
@@ -72,6 +76,7 @@ export const useUserStore = defineStore("user", () => {
     register,
     getLoginUser,
     logout,
+    logoutReset,
     resetToken
   };
 });

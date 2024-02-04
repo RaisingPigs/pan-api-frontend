@@ -6,8 +6,8 @@ import { getToken } from "./cache/cookies";
 import NProgress from "nprogress";
 
 /** 退出登录并强制刷新页面（会重定向到登录页） */
-const logout = async () => {
-  await useUserStoreHook().logout();
+const logoutResetReload = () => {
+  useUserStoreHook().logoutReset();
   location.reload();
 };
 
@@ -35,7 +35,7 @@ function createService() {
 
   // 响应拦截（可根据具体业务作出相应的调整）
   request.interceptors.response.use(
-    async (response) => {
+    (response) => {
       NProgress.done();
 
       // apiData 是 api 返回的数据
@@ -60,7 +60,7 @@ function createService() {
       }
 
       if (code === 40100) {
-        await logout();
+        logoutResetReload();
         return Promise.reject(new Error(respData.msg));
       }
 
@@ -82,7 +82,7 @@ function createService() {
           break;
         case 401:
           // Token 过期时
-          logout();
+          logoutResetReload();
           break;
         case 403:
           error.message = "拒绝访问";
