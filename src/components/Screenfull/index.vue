@@ -3,6 +3,8 @@ import { computed, ref, watchEffect } from "vue";
 import { ElMessage } from "element-plus";
 import screenfull from "screenfull";
 
+defineOptions({ name: "Screenfull" });
+
 interface Props {
   /** 全屏的元素，默认是 html */
   element?: string;
@@ -81,13 +83,15 @@ const handleContentLargeClick = () => {
         <el-dropdown-menu>
           <!-- 内容区放大 -->
           <el-dropdown-item @click="handleContentLargeClick">{{
-            contentLargeTips
-          }}</el-dropdown-item>
+              contentLargeTips
+            }}
+          </el-dropdown-item>
           <!-- 内容区全屏 -->
           <el-dropdown-item
             @click="handleFullscreenClick"
             :disabled="isFullscreen"
-            >内容区全屏</el-dropdown-item
+          >内容区全屏
+          </el-dropdown-item
           >
         </el-dropdown-menu>
       </template>
@@ -98,6 +102,7 @@ const handleContentLargeClick = () => {
 <style lang="scss" scoped>
 .svg-icon {
   font-size: 20px;
+
   &:focus {
     outline: none;
   }

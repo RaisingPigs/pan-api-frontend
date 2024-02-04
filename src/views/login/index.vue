@@ -3,7 +3,7 @@
     <ThemeSwitch class="theme-switch" />
     <div class="login-card">
       <div class="title">
-        <img src="@/assets/layouts/logo-text-2.png" />
+        <img src="@/assets/layouts/logo-text-2.png" alt="" />
       </div>
       <div class="content">
         <el-form
@@ -38,7 +38,8 @@
             type="primary"
             size="large"
             native-type="submit"
-            >登 录</el-button
+          >登 录
+          </el-button
           >
         </el-form>
       </div>
@@ -52,8 +53,9 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/modules/user";
 import { type FormInstance, type FormRules } from "element-plus";
 import { User, Lock } from "@element-plus/icons-vue";
-import { type LoginRequestData } from "@/api/login/type";
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue";
+
+defineOptions({ name: "Login" });
 
 const router = useRouter();
 
@@ -64,7 +66,7 @@ const loginFormRef = ref<FormInstance | null>(null);
 const loading = ref(false);
 
 /** 登录表单数据 */
-const loginFormData: LoginRequestData = reactive({
+const loginFormData: LoginAPI.UserLoginReq = reactive({
   username: "admin",
   password: "admin",
   code: ""
@@ -143,7 +145,7 @@ const handleLogin = async () => {
         .el-image {
           width: 100px;
           height: 40px;
-          border-left: 0px;
+          border-left: 0;
           user-select: none;
           cursor: pointer;
           text-align: center;

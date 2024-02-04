@@ -2,6 +2,8 @@
 import { useTheme } from "@/hooks/useTheme";
 import { MagicStick } from "@element-plus/icons-vue";
 
+defineOptions({ name: "ThemeSwitch" });
+
 const { themeList, activeThemeName, setTheme } = useTheme();
 </script>
 

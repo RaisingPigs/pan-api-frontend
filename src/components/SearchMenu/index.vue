@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import SearchModal from "./SearchModal.vue";
 
+defineOptions({ name: "SearchMenu" });
+
 /** 控制 modal 显隐 */
 const modalVisible = ref<boolean>(false);
 /** 打开 modal */

@@ -5,6 +5,8 @@ import { Bell } from "@element-plus/icons-vue";
 import NotifyList from "./NotifyList.vue";
 import { type ListItem, notifyData, messageData, todoData } from "./data";
 
+defineOptions({ name: "Notify" });
+
 type TabName = "通知" | "消息" | "待办";
 
 interface DataItem {
@@ -88,7 +90,8 @@ const handleHistory = () => {
         </el-tabs>
         <div class="notify-history">
           <el-button link @click="handleHistory"
-            >查看{{ activeName }}历史</el-button
+          >查看{{ activeName }}历史
+          </el-button
           >
         </div>
       </template>
@@ -101,6 +104,7 @@ const handleHistory = () => {
   margin-right: 10px;
   color: var(--el-text-color-regular);
 }
+
 .notify-history {
   text-align: center;
   padding-top: 12px;

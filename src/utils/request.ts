@@ -1,16 +1,15 @@
-import axios, { type AxiosInstance, AxiosResponse } from "axios";
+import axios, { type AxiosInstance } from "axios";
 import { useUserStoreHook } from "@/store/modules/user";
 import { ElMessage } from "element-plus";
 import { get } from "lodash-es";
 import { getToken } from "./cache/cookies";
 import NProgress from "nprogress";
-import { BaseResponse } from "../../types/api";
 
 /** 退出登录并强制刷新页面（会重定向到登录页） */
-function logout() {
-  useUserStoreHook().logout();
+const logout = async () => {
+  await useUserStoreHook().logout();
   location.reload();
-}
+};
 
 /** 创建请求实例 */
 function createService() {
@@ -36,11 +35,11 @@ function createService() {
 
   // 响应拦截（可根据具体业务作出相应的调整）
   request.interceptors.response.use(
-    (response: AxiosResponse<any, BaseResponse<any>>): any => {
+    async (response) => {
       NProgress.done();
 
       // apiData 是 api 返回的数据
-      const respData: BaseResponse<any> = response.data;
+      const respData = response.data;
 
       if (!respData) {
         ElMessage.error("返回值异常");
@@ -58,6 +57,11 @@ function createService() {
       if (code === undefined) {
         ElMessage.error("返回code异常");
         return Promise.reject(new Error("返回code异常"));
+      }
+
+      if (code === 40100) {
+        await logout();
+        return Promise.reject(new Error(respData.msg));
       }
 
       if (code !== 20000) {

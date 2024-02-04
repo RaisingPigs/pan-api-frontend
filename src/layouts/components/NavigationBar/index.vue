@@ -62,14 +62,14 @@ const logout = async () => {
       <el-dropdown class="right-menu-item">
         <div class="right-menu-avatar">
           <el-avatar :icon="UserFilled" :size="30" />
-          <span>{{ userStore.loginUser.name }}</span>
+          <span>{{ userStore.loginUser?.name }}</span>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <a target="_blank" href="https://github.com/un-pany/v3-admin-vite">
+            <a target="_blank" href="#">
               <el-dropdown-item>GitHub</el-dropdown-item>
             </a>
-            <a target="_blank" href="https://gitee.com/un-pany/v3-admin-vite">
+            <a target="_blank" href="#">
               <el-dropdown-item>Gitee</el-dropdown-item>
             </a>
             <el-dropdown-item divided @click="logout">

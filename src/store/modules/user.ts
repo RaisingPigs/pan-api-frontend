@@ -1,22 +1,17 @@
 import { ref } from "vue";
 import store from "@/store";
 import { defineStore } from "pinia";
-import { usePermissionStore } from "./permission";
 import { useTagsViewStore } from "./tags-view";
 import { useSettingsStore } from "./settings";
 import { getToken, removeToken, setToken } from "@/utils/cache/cookies";
-import router, { resetRouter } from "@/router";
-import { type RouteRecordRaw } from "vue-router";
-import { LoginForm, UserVO } from "@/api/login/type";
+import { resetRouter } from "@/router";
 import { reqLogin, reqLoginUser, reqLogout } from "@/api/login";
-import { BaseResponse } from "../../../types/api";
 
 export const useUserStore = defineStore("user", () => {
   const token = ref<string>(getToken() || "");
   const roles = ref<string[]>([]);
-  const loginUser = ref<UserVO>();
+  const loginUser = ref<UserAPI.UserVO>();
 
-  const permissionStore = usePermissionStore();
   const tagsViewStore = useTagsViewStore();
   const settingsStore = useSettingsStore();
 
@@ -26,7 +21,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   /** 登录 */
-  const login = async (loginForm: LoginForm) => {
+  const login = async (loginForm: LoginAPI.UserLoginReq) => {
     const res: BaseResponse<string> = await reqLogin(loginForm);
     setToken(res.data);
     token.value = res.data;
@@ -34,25 +29,11 @@ export const useUserStore = defineStore("user", () => {
 
   /** 获取用户详情 */
   const getLoginUser = async () => {
-    const { data } = await reqLoginUser();
-    loginUser.value = data;
+    const res = await reqLoginUser();
+    loginUser.value = res.data;
 
     // 验证返回的 roles 是否为一个非空数组，否则塞入一个没有任何作用的默认角色，防止路由守卫逻辑进入无限循环
-    roles.value = [data.role];
-  };
-
-  /** 切换角色 */
-  const changeRoles = async (role: string) => {
-    const newToken = "token-" + role;
-    token.value = newToken;
-    setToken(newToken);
-    await getLoginUser();
-    permissionStore.setRoutes(roles.value);
-    resetRouter();
-    permissionStore.dynamicRoutes.forEach((item: RouteRecordRaw) => {
-      router.addRoute(item);
-    });
-    _resetTagsView();
+    roles.value = [res.data.role];
   };
 
   /** 登出 */
@@ -85,7 +66,6 @@ export const useUserStore = defineStore("user", () => {
     setRoles,
     login,
     getLoginUser,
-    changeRoles,
     logout,
     resetToken
   };
