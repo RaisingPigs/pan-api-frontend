@@ -1,4 +1,4 @@
-const SYSTEM_NAME = "admin-init";
+const SYSTEM_NAME = "pan-api-frontend";
 
 /** 缓存数据时用到的 Key */
 class CacheKey {

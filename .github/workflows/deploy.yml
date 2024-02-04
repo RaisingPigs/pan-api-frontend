@@ -1,4 +1,4 @@
-name: Build And Deploy admin-init
+name: Build And Deploy pan-api-frontend
 
 on:
   push:
