@@ -79,7 +79,7 @@ const router = useRouter();
 
 const formRef = ref<FormInstance | null>(null);
 const loading = ref(false);
-const formData: LoginAPI.UserRegisterReq = ref({
+const formData = ref<LoginAPI.UserRegisterReq>({
   username: "",
   password: "",
   checkPassword: ""
@@ -114,8 +114,8 @@ const handleRegister = async () => {
       router.replace({ name: "Login" });
     }, 2500);
   } catch (err) {
-    formData.password = "";
-    formData.checkPassword = "";
+    formData.value.password = "";
+    formData.value.checkPassword = "";
   } finally {
     loading.value = false;
   }
