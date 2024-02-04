@@ -4,6 +4,7 @@ import request from "@/utils/request";
 //项目用户相关的请求地址
 enum URL {
   LOGIN = "/sys/login",
+  REGISTER = "/sys/register",
   GET_LOGIN_USER = "/sys/user",
   LOGOUT = "/sys/logout"
 }
@@ -18,3 +19,5 @@ export const reqLoginUser = async () =>
 
 //退出登录
 export const reqLogout = async () => request.post<never, never>(URL.LOGOUT);
+
+export const reqRegister = async (data: LoginAPI.UserRegisterReq) => request.post(URL.REGISTER, data);

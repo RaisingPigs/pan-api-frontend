@@ -234,7 +234,7 @@ type Options = {
   value: number
 }
 
-const roleOptions = [
+const roleOptions: Options[] = [
   {
     label: "admin",
     value: 0

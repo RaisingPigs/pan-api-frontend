@@ -1,20 +1,20 @@
 <template>
-  <div class="login-container">
+  <div class="register-container">
     <ThemeSwitch class="theme-switch" />
-    <div class="login-card">
+    <div class="register-card">
       <div class="title">
         <img src="@/assets/layouts/logo-text-2.png" alt="" />
       </div>
       <div class="content">
         <el-form
-          ref="loginFormRef"
-          :model="loginFormData"
-          :rules="loginFormRules"
-          @submit.prevent="handleLogin"
+          ref="formRef"
+          :model="formData"
+          :rules="formRules"
+          @submit.prevent="handleRegister"
         >
           <el-form-item prop="username">
             <el-input
-              v-model.trim="loginFormData.username"
+              v-model.trim="formData.username"
               placeholder="用户名"
               type="text"
               tabindex="1"
@@ -25,8 +25,20 @@
           </el-form-item>
           <el-form-item prop="password">
             <el-input
-              v-model.trim="loginFormData.password"
+              v-model.trim="formData.password"
               placeholder="密码"
+              type="password"
+              tabindex="2"
+              :prefix-icon="Lock"
+              size="large"
+              show-password
+              clearable
+            />
+          </el-form-item>
+          <el-form-item prop="checkPassword">
+            <el-input
+              v-model.trim="formData.checkPassword"
+              placeholder="确认密码"
               type="password"
               tabindex="2"
               :prefix-icon="Lock"
@@ -40,13 +52,14 @@
             type="primary"
             size="large"
             native-type="submit"
-          >登 录
+          >
+            注 册
           </el-button
           >
         </el-form>
       </div>
       <div class="register">
-        <el-link @click="toRegister" type="primary">没有账号? 去注册</el-link>
+        <el-link @click="toLogin" type="primary">已有账号? 去登录</el-link>
       </div>
     </div>
   </div>
@@ -56,28 +69,23 @@
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/modules/user";
-import { type FormInstance, type FormRules } from "element-plus";
+import { ElMessage, type FormInstance, type FormRules } from "element-plus";
 import { User, Lock } from "@element-plus/icons-vue";
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue";
 
-defineOptions({ name: "Login" });
+defineOptions({ name: "Register" });
 
 const router = useRouter();
 
-/** 登录表单元素的引用 */
-const loginFormRef = ref<FormInstance | null>(null);
-
-/** 登录按钮 Loading */
+const formRef = ref<FormInstance | null>(null);
 const loading = ref(false);
-
-/** 登录表单数据 */
-const loginFormData: LoginAPI.UserLoginReq = reactive({
-  username: "admin",
-  password: "admin",
-  code: ""
+const formData: LoginAPI.UserRegisterReq = ref({
+  username: "",
+  password: "",
+  checkPassword: ""
 });
-/** 登录表单校验规则 */
-const loginFormRules: FormRules = {
+
+const formRules: FormRules = {
   username: [
     { required: true, message: "请输入用户名", trigger: "blur" },
     { min: 4, max: 16, message: "长度在 8 到 16 个字符", trigger: "blur" }
@@ -86,33 +94,40 @@ const loginFormRules: FormRules = {
     { required: true, message: "请输入密码", trigger: "blur" },
     { min: 4, max: 16, message: "长度在 8 到 16 个字符", trigger: "blur" }
   ],
-  code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+  checkPassword: [
+    { required: true, message: "请输入密码", trigger: "blur" },
+    { min: 4, max: 16, message: "长度在 8 到 16 个字符", trigger: "blur" }
+  ]
 };
 
-/** 登录逻辑 */
-const handleLogin = async () => {
-  const valid = await loginFormRef.value?.validate();
+const handleRegister = async () => {
+  const valid = await formRef.value?.validate();
   if (!valid) {
     return;
   }
   loading.value = true;
   try {
-    await useUserStore().login(loginFormData);
-    await router.replace({ path: "/" });
+    await useUserStore().register(formData.value);
+
+    ElMessage.success("注册成功, 即将跳到登录页...");
+    setTimeout(() => {
+      router.replace({ name: "Login" });
+    }, 2500);
   } catch (err) {
-    loginFormData.password = "";
+    formData.password = "";
+    formData.checkPassword = "";
   } finally {
     loading.value = false;
   }
 };
 
-const toRegister = () => {
-  router.push({ name: "Register" });
+const toLogin = () => {
+  router.push({ name: "Login" });
 };
 </script>
 
 <style lang="scss" scoped>
-.login-container {
+.register-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -126,7 +141,7 @@ const toRegister = () => {
     cursor: pointer;
   }
 
-  .login-card {
+  .register-card {
     width: 480px;
     border-radius: 20px;
     box-shadow: 0 0 10px #dcdfe6;
