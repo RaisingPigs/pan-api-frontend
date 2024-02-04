@@ -143,9 +143,7 @@
         <el-form-item prop="gender" label="性别">
           <el-select
             v-model="dialogFormData.gender"
-            class="m-2"
             placeholder="Select"
-            style="width: 240px"
           >
             <el-option
               v-for="item in genderOptions"
@@ -158,9 +156,7 @@
         <el-form-item prop="role" label="角色">
           <el-select
             v-model="dialogFormData.role"
-            class="m-2"
             placeholder="Select"
-            style="width: 240px"
           >
             <el-option
               v-for="item in roleOptions"
@@ -186,27 +182,10 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, watch, nextTick } from "vue";
-import {
-  reqAddUser,
-  reqDeleteUser,
-  reqListUserByPage,
-  reqUpdateUser
-} from "@/api/user";
-import {
-  type FormInstance,
-  type FormRules,
-  ElMessage,
-  ElMessageBox
-} from "element-plus";
-import {
-  Search,
-  Refresh,
-  CirclePlus,
-  Delete,
-  Download,
-  RefreshRight
-} from "@element-plus/icons-vue";
+import { nextTick, reactive, ref, watch } from "vue";
+import { reqAddUser, reqDeleteUser, reqListUserByPage, reqUpdateUser } from "@/api/user";
+import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
+import { CirclePlus, Delete, Download, Refresh, RefreshRight, Search } from "@element-plus/icons-vue";
 import { usePagination } from "@/hooks/usePagination";
 
 defineOptions({
