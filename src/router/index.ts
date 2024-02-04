@@ -1,5 +1,5 @@
-import { type RouteRecordRaw, createRouter } from "vue-router";
-import { history, flatMultiLevelRoutes } from "./helper";
+import { createRouter, type RouteRecordRaw } from "vue-router";
+import { flatMultiLevelRoutes, history } from "./helper";
 import routeSettings from "@/config/route";
 
 const Layouts = () => import("@/layouts/index.vue");
@@ -7,6 +7,7 @@ const Layouts = () => import("@/layouts/index.vue");
 /**
  * 常驻路由
  * 除了 redirect/403/404/login 等隐藏页面，其他页面建议设置 Name 属性
+ * 给常驻路由的404和403设置name, 可能会导致刷新页面进入404
  */
 export const constantRoutes: RouteRecordRaw[] = [
   {
@@ -23,7 +24,6 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
-    name: "403",
     path: "/403",
     component: () => import("@/views/error-page/403.vue"),
     meta: {
@@ -31,7 +31,6 @@ export const constantRoutes: RouteRecordRaw[] = [
     }
   },
   {
-    name: "404",
     path: "/404",
     component: () => import("@/views/error-page/404.vue"),
     meta: {
