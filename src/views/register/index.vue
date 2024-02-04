@@ -66,11 +66,11 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/modules/user";
 import { ElMessage, type FormInstance, type FormRules } from "element-plus";
-import { User, Lock } from "@element-plus/icons-vue";
+import { Lock, User } from "@element-plus/icons-vue";
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue";
 
 defineOptions({ name: "Register" });
