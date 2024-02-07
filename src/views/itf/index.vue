@@ -11,11 +11,11 @@
         :model="searchData"
         @submit.prevent="handleSearch"
       >
-        <el-form-item prop="name" label="姓名">
-          <el-input v-model="searchData.name" placeholder="请输入姓名" />
+        <el-form-item prop="name" label="接口名">
+          <el-input v-model="searchData.name" placeholder="请输入" />
         </el-form-item>
-        <el-form-item prop="username" label="用户名">
-          <el-input v-model="searchData.username" placeholder="请输入用户名" />
+        <el-form-item prop="url" label="路径">
+          <el-input v-model="searchData.url" placeholder="请输入" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" native-type="submit">
@@ -36,10 +36,19 @@
             type="primary"
             :icon="CirclePlus"
             @click="dialogVisible = true"
+            v-permission="['admin']"
           >
-            新增用户
+            新增接口
           </el-button>
-          <el-button type="danger" :icon="Delete">批量删除</el-button>
+
+          <el-button
+            v-permission="['admin']"
+            type="danger"
+            :icon="Delete"
+          >
+            批量删除
+          </el-button>
+          <el-text v-permission="['user']" size="large" tag="b">接口信息</el-text>
         </div>
         <div>
           <el-tooltip content="下载">
@@ -50,35 +59,30 @@
               type="primary"
               :icon="RefreshRight"
               circle
-              @click="listUserByPage"
+              @click="listItfByPage"
             />
           </el-tooltip>
         </div>
       </div>
       <div class="table-wrapper">
-        <el-table :data="userList">
-          <el-table-column type="selection" width="50" align="center" />
-          <el-table-column type="index" label="序号" width="70" />
-          <el-table-column prop="name" label="姓名" width="160" align="center" />
-          <el-table-column prop="username" label="用户名" align="center" />
-          <el-table-column prop="avatar" label="头像" align="center" />
-          <el-table-column prop="gender" label="性别" align="center" />
-          <el-table-column prop="role" label="角色" align="center">
+        <el-table :data="itfList">
+          <el-table-column v-if="checkPermission(['admin'])" type="selection" width="50" align="center" />
+          <el-table-column type="index" label="序号" width="70" align="center" />
+          <el-table-column prop="name" label="接口名" width="160" align="center" />
+          <el-table-column prop="url" label="路径" align="center" />
+          <el-table-column prop="method" label="请求方式" align="center" width="100">
             <template #default="scope">
-              <el-tag v-if="scope.row.role === 'admin'" effect="plain">
-                {{ scope.row.role }}
-              </el-tag>
-              <el-tag v-else type="warning" effect="plain">
-                {{ scope.row.role }}
+              <el-tag type="warning" effect="plain">
+                {{ scope.row.method }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="createTime" width="160" label="创建时间" align="center" />
-          <el-table-column prop="updateTime" width="160" label="修改时间" align="center" />
+          <el-table-column prop="description" label="接口描述" width="160" align="center" />
+          <el-table-column prop="status" label="状态" align="center" width="70" />
           <el-table-column
             fixed="right"
             label="操作"
-            width="200"
+            width="250"
             align="center"
           >
             <template #default="scope">
@@ -87,11 +91,31 @@
                 text
                 bg
                 size="small"
+                @click="toItfInfo(scope.row, 'ItfDetails')"
+              >
+                详情
+              </el-button>
+              <el-button
+                type="success"
+                text
+                bg
+                size="small"
+                @click="toItfInfo(scope.row, 'ItfInvoke')"
+              >
+                调用
+              </el-button>
+              <el-button
+                v-permission="['admin']"
+                type="warning"
+                text
+                bg
+                size="small"
                 @click="handleUpdate(scope.row)"
               >
                 修改
               </el-button>
               <el-button
+                v-permission="['admin']"
                 type="danger"
                 text
                 bg
@@ -117,10 +141,11 @@
         />
       </div>
     </el-card>
+
     <!-- 新增/修改 -->
     <el-dialog
       v-model="dialogVisible"
-      :title="currentUpdateId === undefined ? '新增用户' : '修改用户'"
+      :title="currentUpdateId === undefined ? '新增接口' : '修改接口'"
       @closed="resetForm"
       width="40%"
     >
@@ -131,41 +156,69 @@
         label-width="100px"
         label-position="left"
       >
-        <el-form-item prop="name" label="姓名">
+        <el-form-item prop="name" label="接口名">
           <el-input v-model="dialogFormData.name" placeholder="请输入" />
         </el-form-item>
-        <el-form-item prop="username" label="用户名">
-          <el-input v-model="dialogFormData.username" placeholder="请输入" />
+        <el-form-item prop="path" label="基本路径">
+          <el-input v-model="dialogFormData.path" placeholder="请输入" />
         </el-form-item>
-        <el-form-item prop="avatar" label="头像">
-          <el-input v-model="dialogFormData.avatar" placeholder="请输入" />
+        <el-form-item prop="url" label="完整路径">
+          <el-input v-model="dialogFormData.url" placeholder="请输入" />
         </el-form-item>
-        <el-form-item prop="gender" label="性别">
+        <el-form-item prop="method" label="请求方式">
           <el-select
-            v-model="dialogFormData.gender"
+            v-model="dialogFormData.method"
             placeholder="Select"
           >
             <el-option
-              v-for="item in genderOptions"
+              v-for="item in methodOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             />
           </el-select>
         </el-form-item>
-        <el-form-item prop="role" label="角色">
+        <el-form-item prop="description" label="描述">
+          <el-input v-model="dialogFormData.description" placeholder="请输入" />
+        </el-form-item>
+        <el-form-item prop="queryParamExample" label="query参数">
+          <el-input
+            v-model="dialogFormData.queryParamExample"
+            :autosize="{ minRows: 1, maxRows: 5 }"
+            type="textarea"
+            placeholder="请输入"
+          />
+        </el-form-item>
+        <el-form-item prop="bodyParamExample" label="body参数">
+          <el-input
+            v-model="dialogFormData.bodyParamExample"
+            :autosize="{ minRows: 1, maxRows: 5 }"
+            type="textarea"
+            placeholder="请输入"
+          />
+        </el-form-item>
+        <el-form-item prop="respExample" label="响应数据">
+          <el-input
+            v-model="dialogFormData.respExample"
+            :autosize="{ minRows: 1, maxRows: 5 }"
+            type="textarea"
+            placeholder="请输入"
+          />
+        </el-form-item>
+        <el-form-item prop="status" label="状态">
           <el-select
-            v-model="dialogFormData.role"
+            v-model="dialogFormData.status"
             placeholder="Select"
           >
             <el-option
-              v-for="item in roleOptions"
+              v-for="item in statusOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             />
           </el-select>
         </el-form-item>
+
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -183,14 +236,16 @@
 
 <script lang="ts" setup>
 import { nextTick, reactive, ref, watch } from "vue";
-import { reqAddUser, reqDeleteUser, reqListUserByPage, reqUpdateUser } from "@/api/user";
+import { reqAddItf, reqDeleteItf, reqListItfByPage, reqUpdateItf } from "@/api/itf";
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
 import { CirclePlus, Delete, Download, Refresh, RefreshRight, Search } from "@element-plus/icons-vue";
 import { usePagination } from "@/hooks/usePagination";
+import { useRouter } from "vue-router";
+import { checkPermission } from "@/utils/permission";
 
 defineOptions({
   // 命名当前组件
-  name: "UserManage"
+  name: "ItfManage"
 });
 
 const loading = ref<boolean>(false);
@@ -202,10 +257,14 @@ const dialogVisible = ref<boolean>(false);
 const dialogFormRef = ref<FormInstance | null>(null);
 const dialogFormData = ref({
   name: "",
-  username: "",
-  avatar: "",
-  gender: 0,
-  role: 1
+  path: "",
+  url: "",
+  method: 0,
+  description: "",
+  queryParamExample: "",
+  bodyParamExample: "",
+  respExample: "",
+  status: 0
 });
 
 type Options = {
@@ -213,35 +272,35 @@ type Options = {
   value: number
 }
 
-const roleOptions: Options[] = [
+const methodOptions: Options[] = [
   {
-    label: "admin",
+    label: "GET",
     value: 0
   },
   {
-    label: "user",
+    label: "POST",
     value: 1
   }
 ];
-const genderOptions = [
+const statusOptions: Options[] = [
   {
-    label: "男",
+    label: "下线",
     value: 0
   },
   {
-    label: "女",
+    label: "上线",
     value: 1
   }
 ];
 
 const dialogFormRules: FormRules = reactive({
-  name: [{ required: true, trigger: "blur", message: "请输入姓名" }],
-  username: [
-    { required: true, trigger: "blur", message: "请输入用户名" }
-  ],
-  avatar: [{ required: true, trigger: "blur", message: "请输入头像" }],
-  gender: [{ required: true, trigger: "blur", message: "请选择性别" }],
-  role: [{ required: true, trigger: "blur", message: "请选择角色" }]
+  name: [{ required: true, trigger: "blur", message: "请输入" }],
+  path: [{ required: true, trigger: "blur", message: "请输入" }],
+  url: [{ required: true, trigger: "blur", message: "请输入" }],
+  method: [{ required: true, trigger: "blur", message: "请选择" }],
+  description: [{ required: true, trigger: "blur", message: "请输入" }],
+  respExample: [{ required: true, trigger: "blur", message: "请输入" }],
+  status: [{ required: true, trigger: "blur", message: "请选择" }]
 });
 
 const handleCreateOrUpdate = async () => {
@@ -252,7 +311,7 @@ const handleCreateOrUpdate = async () => {
 
   loading.value = true;
   try {
-    const api = currentUpdateId.value === undefined ? reqAddUser : reqUpdateUser;
+    const api = currentUpdateId.value === undefined ? reqAddItf : reqUpdateItf;
     await api({
       id: currentUpdateId.value,
       ...dialogFormData.value
@@ -261,7 +320,7 @@ const handleCreateOrUpdate = async () => {
     ElMessage.success("操作成功");
     dialogVisible.value = false;
 
-    await listUserByPage();
+    await listItfByPage();
   } finally {
     loading.value = false;
   }
@@ -271,12 +330,13 @@ const resetForm = () => {
   currentUpdateId.value = undefined;
   dialogFormRef.value?.resetFields();
 };
-// #endregion
+//#endregion
+
 
 //#region 删
-const handleDelete = async (row: UserAPI.UserVO) => {
+const handleDelete = async (row: ItfAPI.ItfVO) => {
   let res = await ElMessageBox.confirm(
-    `是否删除用户：${row.name}，确认删除？`,
+    `是否删除：${row.name}，确认删除？`,
     "提示",
     {
       confirmButtonText: "确定",
@@ -288,11 +348,11 @@ const handleDelete = async (row: UserAPI.UserVO) => {
   if (res) {
     loading.value = true;
     try {
-      await reqDeleteUser(row.id);
+      await reqDeleteItf(row.id);
       ElMessage.success("删除成功");
-      await listUserByPage();
+      await listItfByPage();
     } catch (e) {
-      await listUserByPage();
+      await listItfByPage();
     } finally {
       loading.value = false;
     }
@@ -302,16 +362,20 @@ const handleDelete = async (row: UserAPI.UserVO) => {
 
 //#region 改
 const currentUpdateId = ref<undefined | string>(undefined);
-const handleUpdate = (row: UserAPI.UserVO) => {
+const handleUpdate = (row: ItfAPI.ItfVO) => {
   dialogVisible.value = true;
   // 必须延迟赋值，防止 resetFields 方法将数据重置错误
   nextTick(() => {
     currentUpdateId.value = row.id;
     dialogFormData.value.name = row.name;
-    dialogFormData.value.username = row.username;
-    dialogFormData.value.avatar = row.avatar;
-    dialogFormData.value.gender = getValFromOption(genderOptions, row.gender);
-    dialogFormData.value.role = getValFromOption(roleOptions, row.role);
+    dialogFormData.value.path = row.path;
+    dialogFormData.value.url = row.url;
+    dialogFormData.value.method = getValFromOption(methodOptions, row.method);
+    dialogFormData.value.description = row.description;
+    dialogFormData.value.queryParamExample = row.queryParamExample;
+    dialogFormData.value.bodyParamExample = row.bodyParamExample;
+    dialogFormData.value.respExample = row.respExample;
+    dialogFormData.value.status = getValFromOption(statusOptions, row.status);
   });
 };
 
@@ -319,34 +383,35 @@ const getValFromOption = (options: Options[], _label: string): number => {
   console.log(options, _label);
   const filtered = options.filter((item: Options) => item.label === _label);
   console.log(filtered);
-  return filtered[0].value;
+  return filtered[0]?.value;
 };
 //#endregion
 
 //#region 查
-const userList = ref<UserAPI.UserVO[]>([]);
+const itfList = ref<ItfAPI.ItfVO[]>([]);
 const searchFormRef = ref<FormInstance | null>(null);
 const searchData = reactive({
   name: "",
-  username: ""
+  url: ""
 });
 
-const listUserByPage = async () => {
+const listItfByPage = async () => {
   loading.value = true;
 
-  const userQueryReq: UserAPI.UserQueryReq = {
+  const itfQueryReq: ItfAPI.ItfQueryReq = {
     pageNum: paginationData.value.currentPage,
     pageSize: paginationData.value.pageSize,
     name: searchData.name || undefined,
-    username: searchData.username || undefined
+    url: searchData.url || undefined
   };
 
   try {
-    const { data } = await reqListUserByPage(userQueryReq);
+    const { data } = await reqListItfByPage(itfQueryReq);
+    console.log(data);
     paginationData.value.total = data.total;
-    userList.value = data.records;
+    itfList.value = data.records;
   } catch (err) {
-    userList.value = [];
+    itfList.value = [];
   } finally {
     loading.value = false;
   }
@@ -354,7 +419,7 @@ const listUserByPage = async () => {
 
 const handleSearch = () => {
   paginationData.value.currentPage === 1
-    ? listUserByPage()
+    ? listItfByPage()
     : (paginationData.value.currentPage = 1);
 };
 const resetSearch = () => {
@@ -366,9 +431,20 @@ const resetSearch = () => {
 /** 监听分页参数的变化 */
 watch(
   [() => paginationData.value.currentPage, () => paginationData.value.pageSize],
-  listUserByPage,
+  listItfByPage,
   { immediate: true }
 );
+
+const router = useRouter();
+const toItfInfo = (row: ItfAPI.ItfVO, tabName: string) => {
+  router.push({
+    name: "ItfInfo",
+    query: {
+      "id": row.id,
+      "tabName": tabName
+    }
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -384,6 +460,7 @@ watch(
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  align-items: center;
 }
 
 .table-wrapper {

@@ -49,4 +49,8 @@ declare namespace UserAPI {
     createTime: string;
     updateTime: string;
   };
+
+  type AccessKeyReq = {
+    accessKey?: string;
+  };
 }

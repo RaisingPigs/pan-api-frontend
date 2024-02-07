@@ -80,23 +80,79 @@ export const constantRoutes: RouteRecordRaw[] = [
  */
 export const asyncRoutes: RouteRecordRaw[] = [
   {
-    name: "Sys",
-    path: "/sys",
+    name: "Itf",
+    path: "/itf",
     component: Layouts,
-    redirect: "/sys/user",
+    redirect: "/itf/itf-manage",
     meta: {
-      title: "系统管理",
-      elIcon: "Avatar",
-      roles: ["admin"], // 可以在根路由中设置角色
-      alwaysShow: true // 将始终显示根菜单
+      title: "接口管理",
+      elIcon: "Paperclip",
+      // roles: ["admin"] // 可以在根路由中设置角色
+      // alwaysShow: true // 将始终显示根菜单
     },
     children: [
       {
-        name: "User",
-        path: "user",
+        name: "ItfManage",
+        path: "itf-manage",
+        component: () => import("@/views/itf/index.vue"),
+        meta: {
+          elIcon: "Paperclip",
+          title: "接口数据",
+          keepAlive: true
+        }
+      },
+      {
+        name: "ItfInfo",
+        path: "itf-info",
+        component: () => import("@/views/itf/info/index.vue"),
+        meta: {
+          title: "接口信息",
+          hidden: true,
+          activeMenu: "/itf/itf-manage"
+        }
+      }
+    ]
+  },
+  {
+    name: "Document",
+    path: "/document",
+    component: Layouts,
+    redirect: "/document/invoke-document",
+    meta: {
+      title: "文档数据",
+      elIcon: "Document",
+    },
+    children: [
+      {
+        name: "invokeDocument",
+        path: "invoke-document",
+        component: () => import("@/views/document/index.vue"),
+        meta: {
+          title: "使用文档",
+          elIcon: "Document"
+        }
+      }
+    ]
+  },
+  {
+    name: "User",
+    path: "/user",
+    component: Layouts,
+    redirect: "/user/user-manage",
+    meta: {
+      title: "用户数据",
+      elIcon: "Avatar",
+      roles: ["admin"] // 可以在根路由中设置角色
+      // alwaysShow: true // 将始终显示根菜单
+    },
+    children: [
+      {
+        name: "UserManage",
+        path: "user-manage",
         component: () => import("@/views/user/index.vue"),
         meta: {
           title: "用户管理",
+          elIcon: "Avatar",
           keepAlive: true
         }
       }
