@@ -1,10 +1,6 @@
 <template>
   <div class="app-container">
-    <el-card
-      v-loading="loading"
-      shadow="never"
-      class="search-wrapper"
-    >
+    <el-card v-loading="loading" shadow="never" class="search-wrapper">
       <el-form
         ref="searchFormRef"
         :inline="true"
@@ -26,10 +22,7 @@
       </el-form>
     </el-card>
 
-    <el-card
-      v-loading="loading"
-      shadow="never"
-    >
+    <el-card v-loading="loading" shadow="never">
       <div class="toolbar-wrapper">
         <div>
           <el-button
@@ -59,7 +52,12 @@
         <el-table :data="userList">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column type="index" label="序号" width="70" />
-          <el-table-column prop="name" label="姓名" width="160" align="center" />
+          <el-table-column
+            prop="name"
+            label="姓名"
+            width="160"
+            align="center"
+          />
           <el-table-column prop="username" label="用户名" align="center" />
           <el-table-column prop="avatar" label="头像" align="center" />
           <el-table-column prop="gender" label="性别" align="center" />
@@ -73,8 +71,18 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="createTime" width="160" label="创建时间" align="center" />
-          <el-table-column prop="updateTime" width="160" label="修改时间" align="center" />
+          <el-table-column
+            prop="createTime"
+            width="160"
+            label="创建时间"
+            align="center"
+          />
+          <el-table-column
+            prop="updateTime"
+            width="160"
+            label="修改时间"
+            align="center"
+          />
           <el-table-column
             fixed="right"
             label="操作"
@@ -141,10 +149,7 @@
           <el-input v-model="dialogFormData.avatar" placeholder="请输入" />
         </el-form-item>
         <el-form-item prop="gender" label="性别">
-          <el-select
-            v-model="dialogFormData.gender"
-            placeholder="Select"
-          >
+          <el-select v-model="dialogFormData.gender" placeholder="Select">
             <el-option
               v-for="item in genderOptions"
               :key="item.value"
@@ -154,10 +159,7 @@
           </el-select>
         </el-form-item>
         <el-form-item prop="role" label="角色">
-          <el-select
-            v-model="dialogFormData.role"
-            placeholder="Select"
-          >
+          <el-select v-model="dialogFormData.role" placeholder="Select">
             <el-option
               v-for="item in roleOptions"
               :key="item.value"
@@ -183,9 +185,26 @@
 
 <script lang="ts" setup>
 import { nextTick, reactive, ref, watch } from "vue";
-import { reqAddUser, reqDeleteUser, reqListUserByPage, reqUpdateUser } from "@/api/user";
-import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
-import { CirclePlus, Delete, Download, Refresh, RefreshRight, Search } from "@element-plus/icons-vue";
+import {
+  reqAddUser,
+  reqDeleteUser,
+  reqListUserByPage,
+  reqUpdateUser
+} from "@/api/user";
+import {
+  ElMessage,
+  ElMessageBox,
+  type FormInstance,
+  type FormRules
+} from "element-plus";
+import {
+  CirclePlus,
+  Delete,
+  Download,
+  Refresh,
+  RefreshRight,
+  Search
+} from "@element-plus/icons-vue";
 import { usePagination } from "@/hooks/usePagination";
 
 defineOptions({
@@ -194,7 +213,8 @@ defineOptions({
 });
 
 const loading = ref<boolean>(false);
-const { paginationData, handleCurrentChange, handleSizeChange } = usePagination();
+const { paginationData, handleCurrentChange, handleSizeChange } =
+  usePagination();
 
 const dialogVisible = ref<boolean>(false);
 
@@ -209,9 +229,9 @@ const dialogFormData = ref({
 });
 
 type Options = {
-  label: string,
-  value: number
-}
+  label: string;
+  value: number;
+};
 
 const roleOptions: Options[] = [
   {
@@ -236,9 +256,7 @@ const genderOptions = [
 
 const dialogFormRules: FormRules = reactive({
   name: [{ required: true, trigger: "blur", message: "请输入姓名" }],
-  username: [
-    { required: true, trigger: "blur", message: "请输入用户名" }
-  ],
+  username: [{ required: true, trigger: "blur", message: "请输入用户名" }],
   avatar: [{ required: true, trigger: "blur", message: "请输入头像" }],
   gender: [{ required: true, trigger: "blur", message: "请选择性别" }],
   role: [{ required: true, trigger: "blur", message: "请选择角色" }]
@@ -252,7 +270,8 @@ const handleCreateOrUpdate = async () => {
 
   loading.value = true;
   try {
-    const api = currentUpdateId.value === undefined ? reqAddUser : reqUpdateUser;
+    const api =
+      currentUpdateId.value === undefined ? reqAddUser : reqUpdateUser;
     await api({
       id: currentUpdateId.value,
       ...dialogFormData.value
@@ -275,7 +294,7 @@ const resetForm = () => {
 
 //#region 删
 const handleDelete = async (row: UserAPI.UserVO) => {
-  let res = await ElMessageBox.confirm(
+  const res = await ElMessageBox.confirm(
     `是否删除用户：${row.name}，确认删除？`,
     "提示",
     {

@@ -90,9 +90,8 @@ const handleHistory = () => {
         </el-tabs>
         <div class="notify-history">
           <el-button link @click="handleHistory"
-          >查看{{ activeName }}历史
-          </el-button
-          >
+            >查看{{ activeName }}历史
+          </el-button>
         </div>
       </template>
     </el-popover>

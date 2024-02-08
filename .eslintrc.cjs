@@ -24,7 +24,7 @@ module.exports = {
     }
   },
   rules: {
-    // TS
+    /*// TS
     "@typescript-eslint/no-explicit-any": "off",
     "no-debugger": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -69,6 +69,6 @@ module.exports = {
       {
         endOfLine: "auto"
       }
-    ]
+    ]*/
   }
 };

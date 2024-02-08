@@ -29,8 +29,8 @@ const dependencyValue = `
 const ymlValue = `
 pan-api:
   client:
-    access-key: admin
-    secret-key: admin
+    access-key: xxxxxxxx
+    secret-key: xxxxxxxx
 `;
 
 const getValue = `
@@ -81,6 +81,4 @@ const textareaDataList: TextareaData[] = [
 ];
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

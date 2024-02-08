@@ -21,7 +21,10 @@ export async function reqListItf(data: ItfAPI.ItfQueryReq) {
 }
 
 export async function reqListItfByPage(data: ItfAPI.ItfQueryReq) {
-  return request.post<any, BaseResponse<ItfAPI.IPageItfVO>>("/itf/list/page", data);
+  return request.post<any, BaseResponse<ItfAPI.IPageItfVO>>(
+    "/itf/list/page",
+    data
+  );
 }
 
 export async function reqOfflineItf(id: string) {
@@ -33,7 +36,10 @@ export async function reqOnlineItf(id: string) {
 }
 
 export async function reqGetItfByPathAndMethod(data: ItfAPI.PathMethodReq) {
-  return request.post<any, BaseResponse<ItfAPI.ItfVO>>("/itf/path-method", data);
+  return request.post<any, BaseResponse<ItfAPI.ItfVO>>(
+    "/itf/path-method",
+    data
+  );
 }
 
 export async function reqUpdateItf(data: ItfAPI.ItfUpdateReq) {
@@ -45,5 +51,7 @@ export async function reqGetItfByUrlAndMethod(data: ItfAPI.UrlMethodReq) {
 }
 
 export async function reqGetItfDetailsById(id: string) {
-  return request.get<any, BaseResponse<ItfAPI.ItfDetailsVO>>(`/itf/details/${id}`);
+  return request.get<any, BaseResponse<ItfAPI.ItfDetailsVO>>(
+    `/itf/details/${id}`
+  );
 }

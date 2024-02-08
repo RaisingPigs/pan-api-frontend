@@ -52,13 +52,12 @@ const paramDataList = computed((): ParamData[] => {
     }
   ];
 });
-
 </script>
 
 <style scoped lang="scss">
 .req_params_header {
   display: flex;
   justify-content: space-between;
-  align-items: center
+  align-items: center;
 }
 </style>

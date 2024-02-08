@@ -14,11 +14,17 @@ export async function reqGetUserById(id: string) {
 }
 
 export async function reqListUser(data: UserAPI.UserQueryReq) {
-  return request.post<any, BaseResponse<Array<UserAPI.UserVO>>>("/user/list", data);
+  return request.post<any, BaseResponse<Array<UserAPI.UserVO>>>(
+    "/user/list",
+    data
+  );
 }
 
 export async function reqListUserByPage(data: UserAPI.UserQueryReq) {
-  return request.post<any, BaseResponse<IPage<UserAPI.UserVO>>>("/user/list/page", data);
+  return request.post<any, BaseResponse<IPage<UserAPI.UserVO>>>(
+    "/user/list/page",
+    data
+  );
 }
 
 export async function reqUpdateUser(data: UserAPI.UserUpdateReq) {

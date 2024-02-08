@@ -1,4 +1,4 @@
 export type TextareaData = {
-  title: string,
-  value: string
-}
+  title: string;
+  value: string;
+};

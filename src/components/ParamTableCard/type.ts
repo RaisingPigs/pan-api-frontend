@@ -1,5 +1,5 @@
 export type ParamData = {
-  title: string,
-  tableData: ItfAPI.ParamVO,
-  required_row: boolean
-}
+  title: string;
+  tableData: ItfAPI.ParamVO;
+  required_row: boolean;
+};

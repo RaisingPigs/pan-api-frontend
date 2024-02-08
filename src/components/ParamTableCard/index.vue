@@ -20,9 +20,11 @@
 <script setup lang="ts">
 defineOptions({ name: "ParamTableCard" });
 
-defineProps<{ title: string, tableData: ItfAPI.ParamVO, required_row: boolean }>();
+defineProps<{
+  title: string;
+  tableData: ItfAPI.ParamVO;
+  required_row: boolean;
+}>();
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

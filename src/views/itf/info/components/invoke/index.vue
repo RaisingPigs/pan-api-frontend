@@ -3,14 +3,20 @@
     <el-card shadow="never" header="模拟调用">
       <el-space direction="vertical" fill style="width: 100%" :size="25">
         <div class="invoke_area">
-          <el-input size="large" v-model="itfDetails.url" placeholder="请输入请求路径" readonly>
+          <el-input
+            size="large"
+            v-model="itfDetails.url"
+            placeholder="请输入请求路径"
+            readonly
+          >
             <template #prepend>GET</template>
           </el-input>
           <el-button
             @click="handleItfInvoke"
             size="large"
             class="invoke_btn"
-            type="primary">
+            type="primary"
+          >
             发送请求
           </el-button>
         </div>
@@ -18,11 +24,7 @@
         <div class="param_area">
           <el-text tag="b" size="small" type="info">请求参数</el-text>
 
-          <el-tabs
-            v-model="activeName"
-            tab-position="top"
-            type="border-card"
-          >
+          <el-tabs v-model="activeName" tab-position="top" type="border-card">
             <el-tab-pane label="query" name="query">
               <el-input
                 v-model="itfDetails.queryParamExample"
@@ -72,7 +74,6 @@ import "vue-json-pretty/lib/styles.css";
 import { storeToRefs } from "pinia";
 import { ElMessage } from "element-plus";
 
-
 defineOptions({ name: "ItfInvoke" });
 
 const { itfDetails } = storeToRefs(useItfStoreHook());
@@ -95,7 +96,7 @@ const handleItfInvoke = async () => {
     return;
   }
 
-  respData.value = await reqInvokeItf( {
+  respData.value = await reqInvokeItf({
     id: useItfStoreHook().curItfId,
     queryParam: queryParam,
     bodyParam: bodyParam
@@ -113,7 +114,6 @@ const handleItfInvoke = async () => {
   }
 }
 
-
 .param_area {
   & :deep(.el-tabs__content) {
     padding: 0;
@@ -129,5 +129,4 @@ const handleItfInvoke = async () => {
   border: 2px solid #dcdfe6;
   border-radius: 4px;
 }
-
 </style>

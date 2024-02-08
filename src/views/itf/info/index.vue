@@ -3,6 +3,7 @@
     <el-tabs
       v-model="itfStore.curTabName"
       tab-position="left"
+      @tab-change="handleTabChange"
       style="height: 100%"
     >
       <el-tab-pane label="详情" name="ItfDetails">
@@ -52,13 +53,24 @@ import ItfDetails from "@/views/itf/info/components/details/index.vue";
 import ItfExample from "@/views/itf/info/components/example/index.vue";
 import ItfInvoke from "@/views/itf/info/components/invoke/index.vue";
 import { useItfStore, useItfStoreHook } from "@/store/modules/itf";
+import { useRouter } from "vue-router";
 
 defineOptions({ name: "ItfInfo" });
 
 const itfStore = useItfStore();
+const router = useRouter();
 
 useItfStoreHook().getItfDetailsById(itfStore.curItfId);
+
+const handleTabChange = (tabPaneName: string) => {
+  router.push({
+    name: "ItfInfo",
+    query: {
+      curItfId: useItfStoreHook().curItfId,
+      curTabName: tabPaneName
+    }
+  });
+};
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

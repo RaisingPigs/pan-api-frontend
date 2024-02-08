@@ -40,9 +40,8 @@
             type="primary"
             size="large"
             native-type="submit"
-          >登 录
-          </el-button
-          >
+            >登 录
+          </el-button>
         </el-form>
       </div>
       <div class="register">

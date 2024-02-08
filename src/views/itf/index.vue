@@ -1,10 +1,6 @@
 <template>
   <div class="app-container">
-    <el-card
-      v-loading="loading"
-      shadow="never"
-      class="search-wrapper"
-    >
+    <el-card v-loading="loading" shadow="never" class="search-wrapper">
       <el-form
         ref="searchFormRef"
         :inline="true"
@@ -26,10 +22,7 @@
       </el-form>
     </el-card>
 
-    <el-card
-      v-loading="loading"
-      shadow="never"
-    >
+    <el-card v-loading="loading" shadow="never">
       <div class="toolbar-wrapper">
         <div>
           <el-button
@@ -41,14 +34,12 @@
             新增接口
           </el-button>
 
-          <el-button
-            v-permission="['admin']"
-            type="danger"
-            :icon="Delete"
-          >
+          <el-button v-permission="['admin']" type="danger" :icon="Delete">
             批量删除
           </el-button>
-          <el-text v-permission="['user']" size="large" tag="b">接口信息</el-text>
+          <el-text v-permission="['user']" size="large" tag="b"
+            >接口信息</el-text
+          >
         </div>
         <div>
           <el-tooltip content="下载">
@@ -66,19 +57,49 @@
       </div>
       <div class="table-wrapper">
         <el-table :data="itfList">
-          <el-table-column v-if="checkPermission(['admin'])" type="selection" width="50" align="center" />
-          <el-table-column type="index" label="序号" width="70" align="center" />
-          <el-table-column prop="name" label="接口名" width="160" align="center" />
+          <el-table-column
+            v-if="checkPermission(['admin'])"
+            type="selection"
+            width="50"
+            align="center"
+          />
+          <el-table-column
+            type="index"
+            label="序号"
+            width="70"
+            align="center"
+          />
+          <el-table-column
+            prop="name"
+            label="接口名"
+            width="160"
+            align="center"
+          />
           <el-table-column prop="url" label="路径" align="center" />
-          <el-table-column prop="method" label="请求方式" align="center" width="100">
+          <el-table-column
+            prop="method"
+            label="请求方式"
+            align="center"
+            width="100"
+          >
             <template #default="scope">
               <el-tag type="warning" effect="plain">
                 {{ scope.row.method }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="description" label="接口描述" width="160" align="center" />
-          <el-table-column prop="status" label="状态" align="center" width="70" />
+          <el-table-column
+            prop="description"
+            label="接口描述"
+            width="160"
+            align="center"
+          />
+          <el-table-column
+            prop="status"
+            label="状态"
+            align="center"
+            width="70"
+          />
           <el-table-column
             fixed="right"
             label="操作"
@@ -166,10 +187,7 @@
           <el-input v-model="dialogFormData.url" placeholder="请输入" />
         </el-form-item>
         <el-form-item prop="method" label="请求方式">
-          <el-select
-            v-model="dialogFormData.method"
-            placeholder="Select"
-          >
+          <el-select v-model="dialogFormData.method" placeholder="Select">
             <el-option
               v-for="item in methodOptions"
               :key="item.value"
@@ -206,10 +224,7 @@
           />
         </el-form-item>
         <el-form-item prop="status" label="状态">
-          <el-select
-            v-model="dialogFormData.status"
-            placeholder="Select"
-          >
+          <el-select v-model="dialogFormData.status" placeholder="Select">
             <el-option
               v-for="item in statusOptions"
               :key="item.value"
@@ -218,7 +233,6 @@
             />
           </el-select>
         </el-form-item>
-
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -236,12 +250,30 @@
 
 <script lang="ts" setup>
 import { nextTick, reactive, ref, watch } from "vue";
-import { reqAddItf, reqDeleteItf, reqListItfByPage, reqUpdateItf } from "@/api/itf";
-import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
-import { CirclePlus, Delete, Download, Refresh, RefreshRight, Search } from "@element-plus/icons-vue";
+import {
+  reqAddItf,
+  reqDeleteItf,
+  reqListItfByPage,
+  reqUpdateItf
+} from "@/api/itf";
+import {
+  ElMessage,
+  ElMessageBox,
+  type FormInstance,
+  type FormRules
+} from "element-plus";
+import {
+  CirclePlus,
+  Delete,
+  Download,
+  Refresh,
+  RefreshRight,
+  Search
+} from "@element-plus/icons-vue";
 import { usePagination } from "@/hooks/usePagination";
 import { useRouter } from "vue-router";
 import { checkPermission } from "@/utils/permission";
+import { useItfStoreHook } from "@/store/modules/itf";
 
 defineOptions({
   // 命名当前组件
@@ -249,7 +281,8 @@ defineOptions({
 });
 
 const loading = ref<boolean>(false);
-const { paginationData, handleCurrentChange, handleSizeChange } = usePagination();
+const { paginationData, handleCurrentChange, handleSizeChange } =
+  usePagination();
 
 const dialogVisible = ref<boolean>(false);
 
@@ -268,9 +301,9 @@ const dialogFormData = ref({
 });
 
 type Options = {
-  label: string,
-  value: number
-}
+  label: string;
+  value: number;
+};
 
 const methodOptions: Options[] = [
   {
@@ -332,10 +365,9 @@ const resetForm = () => {
 };
 //#endregion
 
-
 //#region 删
 const handleDelete = async (row: ItfAPI.ItfVO) => {
-  let res = await ElMessageBox.confirm(
+  const res = await ElMessageBox.confirm(
     `是否删除：${row.name}，确认删除？`,
     "提示",
     {
@@ -434,6 +466,8 @@ watch(
 
 const router = useRouter();
 const toItfInfo = (row: ItfAPI.ItfVO, curTabName: string) => {
+  useItfStoreHook().setIdAndTab(row.id, curTabName);
+
   router.push({
     name: "ItfInfo",
     query: {

@@ -35,7 +35,7 @@ function createService() {
 
   // 响应拦截（可根据具体业务作出相应的调整）
   request.interceptors.response.use(
-    (response) => {
+    response => {
       NProgress.done();
 
       // apiData 是 api 返回的数据

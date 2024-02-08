@@ -3,7 +3,7 @@ type BaseResponse<T> = {
   data: T;
   msg: string;
   desc: string;
-}
+};
 
 type IPage<T> = {
   pages: number;

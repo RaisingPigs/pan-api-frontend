@@ -18,9 +18,7 @@
           <el-tag>{{ itfDetails.method }}</el-tag>
         </el-descriptions-item>
 
-        <el-descriptions-item label="返回格式">
-          json
-        </el-descriptions-item>
+        <el-descriptions-item label="返回格式"> json </el-descriptions-item>
         <el-descriptions-item label="接口状态">
           {{ itfDetails.status }}
         </el-descriptions-item>
@@ -35,6 +33,4 @@ defineOptions({ name: "ItfDescCard" });
 defineProps<{ itfDetails: ItfAPI.ItfDetailsVO }>();
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

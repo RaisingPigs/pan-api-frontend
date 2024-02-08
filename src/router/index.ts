@@ -86,7 +86,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
     redirect: "/itf/itf-manage",
     meta: {
       title: "接口管理",
-      elIcon: "Paperclip",
+      elIcon: "Paperclip"
       // roles: ["admin"] // 可以在根路由中设置角色
       // alwaysShow: true // 将始终显示根菜单
     },
@@ -120,7 +120,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
     redirect: "/document/invoke-document",
     meta: {
       title: "文档数据",
-      elIcon: "Document",
+      elIcon: "Document"
     },
     children: [
       {

@@ -4,7 +4,6 @@ import { reqGetItfDetailsById } from "@/api/itf";
 import { Ref, ref } from "vue";
 import { useRoute } from "vue-router";
 
-
 export const useItfStore = defineStore("itf", () => {
   const route = useRoute();
 

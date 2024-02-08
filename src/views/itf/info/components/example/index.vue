@@ -11,7 +11,6 @@
           :autosize="{ minRows: 1, maxRows: 20 }"
         />
       </template>
-
     </el-space>
   </div>
 </template>
@@ -45,14 +44,12 @@ const textareaDataList = computed((): TextareaData[] => {
     }
   ];
 });
-
-
 </script>
 
 <style scoped lang="scss">
 .params_header {
   display: flex;
   justify-content: space-between;
-  align-items: center
+  align-items: center;
 }
 </style>

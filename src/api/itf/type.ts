@@ -101,7 +101,7 @@ declare namespace ItfAPI {
     respExample: object;
     reqHeader?: string;
     respHeader?: string;
-    status?: number
+    status?: number;
     createTime?: string;
     updateTime?: string;
     queryParam?: ParamVO[];

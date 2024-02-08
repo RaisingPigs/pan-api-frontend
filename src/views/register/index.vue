@@ -54,8 +54,7 @@
             native-type="submit"
           >
             注 册
-          </el-button
-          >
+          </el-button>
         </el-form>
       </div>
       <div class="register">

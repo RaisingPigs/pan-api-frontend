@@ -20,4 +20,5 @@ export const reqLoginUser = async () =>
 //退出登录
 export const reqLogout = async () => request.post<never, never>(URL.LOGOUT);
 
-export const reqRegister = async (data: LoginAPI.UserRegisterReq) => request.post(URL.REGISTER, data);
+export const reqRegister = async (data: LoginAPI.UserRegisterReq) =>
+  request.post(URL.REGISTER, data);

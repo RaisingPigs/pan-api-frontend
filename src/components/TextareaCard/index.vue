@@ -8,12 +8,7 @@
         </div>
       </template>
 
-      <el-input
-        v-model="_val"
-        type="textarea"
-        readonly
-        v-bind="$attrs"
-      />
+      <el-input v-model="_val" type="textarea" readonly v-bind="$attrs" />
     </el-card>
   </div>
 </template>
@@ -21,7 +16,7 @@
 <script setup lang="ts">
 defineOptions({ name: "TextareaCard" });
 
-const props = defineProps<{ title: string, value: string }>();
+const props = defineProps<{ title: string; value: string }>();
 const _val = props.value;
 </script>
 
@@ -29,6 +24,6 @@ const _val = props.value;
 .params_header {
   display: flex;
   justify-content: space-between;
-  align-items: center
+  align-items: center;
 }
 </style>
