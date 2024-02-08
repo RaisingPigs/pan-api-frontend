@@ -51,15 +51,11 @@
 import ItfDetails from "@/views/itf/info/components/details/index.vue";
 import ItfExample from "@/views/itf/info/components/example/index.vue";
 import ItfInvoke from "@/views/itf/info/components/invoke/index.vue";
-import { useRoute } from "vue-router";
 import { useItfStore, useItfStoreHook } from "@/store/modules/itf";
 
 defineOptions({ name: "ItfInfo" });
 
-
-const route = useRoute();
 const itfStore = useItfStore();
-
 
 useItfStoreHook().getItfDetailsById(itfStore.curItfId);
 </script>
