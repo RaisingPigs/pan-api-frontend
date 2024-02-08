@@ -39,6 +39,7 @@
     "pinia": "2.1.7",
     "screenfull": "6.0.2",
     "vue": "3.4.15",
+    "vue-json-pretty": "^2.3.0",
     "vue-router": "4.2.5",
     "vxe-table": "4.4.1",
     "vxe-table-plugin-element": "3.0.7",

@@ -57,7 +57,7 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/modules/user";
 import { type FormInstance, type FormRules } from "element-plus";
-import { User, Lock } from "@element-plus/icons-vue";
+import { Lock, User } from "@element-plus/icons-vue";
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue";
 
 defineOptions({ name: "Login" });
@@ -72,9 +72,8 @@ const loading = ref(false);
 
 /** 登录表单数据 */
 const loginFormData: LoginAPI.UserLoginReq = reactive({
-  username: "admin",
-  password: "admin",
-  code: ""
+  username: "111111",
+  password: "111111"
 });
 /** 登录表单校验规则 */
 const loginFormRules: FormRules = {

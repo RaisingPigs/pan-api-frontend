@@ -21,8 +21,8 @@ declare namespace ItfAPI {
 
   type ItfInvokeReq = {
     id?: string;
-    queryParamExample?: Record<string, any>;
-    bodyParamExample?: string;
+    queryParam?: object;
+    bodyParam?: object;
   };
 
   type ItfQueryReq = {
@@ -67,14 +67,14 @@ declare namespace ItfAPI {
     name: string;
     path: string;
     url: string;
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+    method: "GET" | "POST" | "PUT" | "DELETE";
     description: string;
-    queryParamExample: string;
-    bodyParamExample: string;
-    respExample: string;
+    queryParamExample: object;
+    bodyParamExample: object;
+    respExample: object;
     reqHeader: string;
     respHeader: string;
-    status: '上线' | '下线';
+    status: "上线" | "下线";
     createTime: string;
     updateTime: string;
   };
@@ -87,5 +87,34 @@ declare namespace ItfAPI {
   type UrlMethodReq = {
     url: string;
     method: string;
+  };
+
+  type ItfDetailsVO = {
+    id?: string;
+    name?: string;
+    path?: string;
+    url?: string;
+    method?: number;
+    description?: string;
+    queryParamExample: string;
+    bodyParamExample: string;
+    respExample: object;
+    reqHeader?: string;
+    respHeader?: string;
+    status?: number
+    createTime?: string;
+    updateTime?: string;
+    queryParam?: ParamVO[];
+    bodyParam?: ParamVO[];
+    commonResp?: ParamVO[];
+    respData?: ParamVO[];
+  };
+
+  type ParamVO = {
+    id?: string;
+    name?: string;
+    required?: number;
+    dataType?: string;
+    description?: string;
   };
 }

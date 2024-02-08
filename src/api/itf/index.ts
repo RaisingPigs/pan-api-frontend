@@ -13,7 +13,7 @@ export async function reqGetItfById(id: string) {
 }
 
 export async function reqInvokeItf(data: ItfAPI.ItfInvokeReq) {
-  return request.post<any, BaseResponse<object>>("/itf/invoke", data);
+  return request.post<any, BaseResponse<string>>("/itf/invoke", data);
 }
 
 export async function reqListItf(data: ItfAPI.ItfQueryReq) {
@@ -42,4 +42,8 @@ export async function reqUpdateItf(data: ItfAPI.ItfUpdateReq) {
 
 export async function reqGetItfByUrlAndMethod(data: ItfAPI.UrlMethodReq) {
   return request.post<any, BaseResponse<ItfAPI.ItfVO>>("/itf/url-method", data);
+}
+
+export async function reqGetItfDetailsById(id: string) {
+  return request.get<any, BaseResponse<ItfAPI.ItfDetailsVO>>(`/itf/details/${id}`);
 }

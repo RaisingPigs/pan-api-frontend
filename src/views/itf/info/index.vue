@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-tabs
-      v-model="activeName"
+      v-model="itfStore.curTabName"
       tab-position="left"
       style="height: 100%"
     >
@@ -15,7 +15,7 @@
           </el-space>
         </template>
 
-        <ItfDetails :id="id" />
+        <ItfDetails />
       </el-tab-pane>
 
       <el-tab-pane label="示例" name="ItfExample">
@@ -28,7 +28,7 @@
           </el-space>
         </template>
 
-        <ItfExample :id="id" />
+        <ItfExample />
       </el-tab-pane>
 
       <el-tab-pane label="调用" name="ItfInvoke">
@@ -41,7 +41,7 @@
           </el-space>
         </template>
 
-        <ItfInvoke :id="id" />
+        <ItfInvoke />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -52,17 +52,17 @@ import ItfDetails from "@/views/itf/info/components/details/index.vue";
 import ItfExample from "@/views/itf/info/components/example/index.vue";
 import ItfInvoke from "@/views/itf/info/components/invoke/index.vue";
 import { useRoute } from "vue-router";
+import { useItfStore, useItfStoreHook } from "@/store/modules/itf";
 
 defineOptions({ name: "ItfInfo" });
 
 
 const route = useRoute();
+const itfStore = useItfStore();
 
-const id = route.query.id;
-const activeName = route.query.tabName;
 
+useItfStoreHook().getItfDetailsById(itfStore.curItfId);
 </script>
 
 <style scoped lang="scss">
-
 </style>

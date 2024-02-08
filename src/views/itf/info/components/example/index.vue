@@ -1,75 +1,52 @@
 <template>
   <div>
     <el-space :size="20" direction="vertical" fill style="width: 100%">
-      <el-card shadow="never" header="请求路径">
-        <el-descriptions :column="1">
-          <el-descriptions-item label="接口名">kooriookami</el-descriptions-item>
-          <el-descriptions-item label="请求方式">
-            <el-tag>get</el-tag>
-          </el-descriptions-item>
-          <el-descriptions-item label="路径与query参数">
-            http://localhost:8888/api/itf/name/post/json5
-          </el-descriptions-item>
-        </el-descriptions>
-      </el-card>
+      <ItfDescCard :itf-details="itfDetails" />
 
-      <el-card shadow="never">
-        <template #header>
-          <div class="params_header">
-            <span>body参数示例</span>
-            <el-button class="button" size="small" text>复制</el-button>
-          </div>
-        </template>
-
-        <el-input
-          v-model="textarea"
-          :autosize="{ minRows: 1, maxRows: 10 }"
-          type="textarea"
-          readonly
+      <template v-for="(textareaData, index) in textareaDataList" :key="index">
+        <TextareaCard
+          v-if="textareaData.value"
+          :title="textareaData.title"
+          :value="textareaData.value"
+          :autosize="{ minRows: 1, maxRows: 20 }"
         />
-      </el-card>
-
-      <el-card shadow="never">
-        <template #header>
-          <div class="params_header">
-            <span>响应结果示例</span>
-            <el-button class="button" size="small" text>复制</el-button>
-          </div>
-        </template>
-
-        <el-input
-          v-model="textarea"
-          :autosize="{ minRows: 1, maxRows: 10 }"
-          type="textarea"
-          readonly
-        />
-      </el-card>
+      </template>
 
     </el-space>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed } from "vue";
+import { useItfStore } from "@/store/modules/itf";
+import { storeToRefs } from "pinia";
+import ItfDescCard from "@/components/ItfDescCard/index.vue";
+import TextareaCard from "@/components/TextareaCard/index.vue";
+import { TextareaData } from "@/components/TextareaCard/type";
 
 defineOptions({ name: "ItfExample" });
 
-defineProps<{ id: string }>();
+const itfStore = useItfStore();
+const { itfDetails } = storeToRefs(itfStore);
 
-const textarea = ref<string>("{\n" +
-  "  \"id\": 1,\n" +
-  "  \"urlParams\": {\"name\": \"张三\"},\n" +
-  "  \"jsonBody\": \"\"\n" +
-  "}");
+const textareaDataList = computed((): TextareaData[] => {
+  return [
+    {
+      title: "query参数示例",
+      value: itfDetails.value.queryParamExample as string
+    },
+    {
+      title: "body参数示例",
+      value: itfDetails.value.bodyParamExample as string
+    },
+    {
+      title: "响应结果示例",
+      value: itfDetails.value.respExample as string
+    }
+  ];
+});
 
-interface User {
-  id: number;
-  date: string;
-  name: string;
-  address: string;
-  hasChildren?: boolean;
-  children?: User[];
-}
+
 </script>
 
 <style scoped lang="scss">

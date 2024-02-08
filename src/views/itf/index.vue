@@ -380,9 +380,7 @@ const handleUpdate = (row: ItfAPI.ItfVO) => {
 };
 
 const getValFromOption = (options: Options[], _label: string): number => {
-  console.log(options, _label);
   const filtered = options.filter((item: Options) => item.label === _label);
-  console.log(filtered);
   return filtered[0]?.value;
 };
 //#endregion
@@ -407,7 +405,6 @@ const listItfByPage = async () => {
 
   try {
     const { data } = await reqListItfByPage(itfQueryReq);
-    console.log(data);
     paginationData.value.total = data.total;
     itfList.value = data.records;
   } catch (err) {
@@ -436,12 +433,12 @@ watch(
 );
 
 const router = useRouter();
-const toItfInfo = (row: ItfAPI.ItfVO, tabName: string) => {
+const toItfInfo = (row: ItfAPI.ItfVO, curTabName: string) => {
   router.push({
     name: "ItfInfo",
     query: {
-      "id": row.id,
-      "tabName": tabName
+      curItfId: row.id,
+      curTabName
     }
   });
 };

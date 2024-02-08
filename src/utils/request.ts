@@ -41,6 +41,10 @@ function createService() {
       // apiData 是 api 返回的数据
       const respData = response.data;
 
+      if (response.config.url && response.config.url === "/itf/invoke") {
+        return respData;
+      }
+
       if (!respData) {
         ElMessage.error("返回值异常");
         return Promise.reject(new Error("返回值异常"));
