@@ -3,7 +3,7 @@
     <ThemeSwitch class="theme-switch" />
     <div class="login-card">
       <div class="title">
-        <img src="@/assets/layouts/logo-text-2.png" alt="" />
+        <Logo title="Pan-Api" :font-size="55" :is-black="true" />
       </div>
       <div class="content">
         <el-form
@@ -40,7 +40,7 @@
             type="primary"
             size="large"
             native-type="submit"
-            >登 录
+          >登 录
           </el-button>
         </el-form>
       </div>
@@ -58,6 +58,7 @@ import { useUserStore } from "@/store/modules/user";
 import { type FormInstance, type FormRules } from "element-plus";
 import { Lock, User } from "@element-plus/icons-vue";
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue";
+import Logo from "@/components/Logo/index.vue";
 
 defineOptions({ name: "Login" });
 
@@ -138,9 +139,15 @@ const toRegister = () => {
       align-items: center;
       height: 150px;
 
-      img {
-        height: 100%;
-      }
+      //span {
+      //  font-size: 55px;
+      //  font-weight: bold;
+      //  color: transparent;
+      //  -webkit-background-clip: text;
+      //  background-clip: text;
+      //  -webkit-text-fill-color: transparent;
+      //  background-image: linear-gradient(109.6deg, rgb(0, 51, 102) 11.2%, rgb(187, 187, 187) 91.1%);
+      //}
     }
 
     .content {
