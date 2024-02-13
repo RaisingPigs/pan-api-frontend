@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-space :size="20" direction="vertical" fill style="width: 100%">
-      <ItfDescCard :itf-details="itfDetails" />
+      <ItfDescCard :itf-vo="itfVO" :user-itf-vo="userItfVO" />
 
       <template v-for="paramData in paramDataList" :key="paramData.title">
         <ParamTableCard
@@ -26,28 +26,28 @@ import { ParamData } from "@/components/ParamTableCard/type";
 defineOptions({ name: "ItfDetails" });
 
 const itfStore = useItfStore();
-const { itfDetails } = storeToRefs(itfStore);
+const { itfVO, userItfVO, queryParam, bodyParam, commonResp, respData } = storeToRefs(itfStore);
 
 const paramDataList = computed((): ParamData[] => {
   return [
     {
       title: "query参数",
-      tableData: itfDetails.value.queryParam as ItfAPI.ParamVO,
+      tableData: queryParam.value as ItfAPI.ParamVO,
       required_row: true
     },
     {
       title: "body参数",
-      tableData: itfDetails.value.bodyParam as ItfAPI.ParamVO,
+      tableData: bodyParam.value as ItfAPI.ParamVO,
       required_row: true
     },
     {
       title: "通用响应结果",
-      tableData: itfDetails.value.commonResp as ItfAPI.ParamVO,
+      tableData: commonResp.value as ItfAPI.ParamVO,
       required_row: false
     },
     {
       title: "响应结果data",
-      tableData: itfDetails.value.respData as ItfAPI.ParamVO,
+      tableData: respData.value as ItfAPI.ParamVO,
       required_row: false
     }
   ];

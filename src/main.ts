@@ -4,6 +4,7 @@ import App from "@/App.vue";
 import store from "@/store";
 import router from "@/router";
 import "@/router/permission";
+import echarts from "@/echarts";
 // load
 import { loadSvg } from "@/icons";
 import { loadPlugins } from "@/plugins";
@@ -26,6 +27,7 @@ loadSvg(app);
 /** 加载自定义指令 */
 loadDirectives(app);
 
+app.provide("$echarts", echarts); // vue3采用provide, inject方式使用
 app.use(store).use(router);
 router.isReady().then(() => {
   app.mount("#app");

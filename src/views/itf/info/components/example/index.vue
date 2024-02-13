@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-space :size="20" direction="vertical" fill style="width: 100%">
-      <ItfDescCard :itf-details="itfDetails" />
+      <ItfDescCard :itf-vo="itfVO" :user-itf-vo="userItfVO" />
 
       <template v-for="(textareaData, index) in textareaDataList" :key="index">
         <TextareaCard
@@ -22,25 +22,26 @@ import { storeToRefs } from "pinia";
 import ItfDescCard from "@/components/ItfDescCard/index.vue";
 import TextareaCard from "@/components/TextareaCard/index.vue";
 import { TextareaData } from "@/components/TextareaCard/type";
+import LeftCountIncrement from "@/views/itf/info/components/left-count-increment/index.vue";
 
 defineOptions({ name: "ItfExample" });
 
 const itfStore = useItfStore();
-const { itfDetails } = storeToRefs(itfStore);
+const { itfVO, userItfVO } = storeToRefs(itfStore);
 
 const textareaDataList = computed((): TextareaData[] => {
   return [
     {
       title: "query参数示例",
-      value: itfDetails.value.queryParamExample as string
+      value: itfVO.value.queryParamExample
     },
     {
       title: "body参数示例",
-      value: itfDetails.value.bodyParamExample as string
+      value: itfVO.value.bodyParamExample
     },
     {
       title: "响应结果示例",
-      value: itfDetails.value.respExample as string
+      value:  itfVO.value.respExample
     }
   ];
 });

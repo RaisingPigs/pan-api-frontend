@@ -46,11 +46,18 @@ declare namespace UserItfAPI {
   };
 
   type UserItfVO = {
+    id: string;
+    userId: string;
+    itfId: string;
+    invokeCount: number;
+    leftCount: number;
+    status: number;
+  };
+
+  type LeftCountReq = {
     id?: string;
     userId?: string;
     itfId?: string;
-    invokeCount?: number;
-    leftCount?: number;
-    status?: number;
+    count: number;
   };
 }

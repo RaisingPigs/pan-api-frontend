@@ -1,11 +1,12 @@
 <template>
   <div>
     <el-card shadow="never" header="模拟调用">
+      <LeftCountIncrement/>
       <el-space direction="vertical" fill style="width: 100%" :size="25">
         <div class="invoke_area">
           <el-input
             size="large"
-            v-model="itfDetails.url"
+            v-model="itfVO.url"
             placeholder="请输入请求路径"
             readonly
           >
@@ -16,6 +17,7 @@
             size="large"
             class="invoke_btn"
             type="primary"
+            :loading="loading"
           >
             发送请求
           </el-button>
@@ -27,7 +29,7 @@
           <el-tabs v-model="activeName" tab-position="top" type="border-card">
             <el-tab-pane label="query" name="query">
               <el-input
-                v-model="itfDetails.queryParamExample"
+                v-model="itfVO.queryParamExample"
                 :rows="11"
                 type="textarea"
                 placeholder="请输入query参数, json格式"
@@ -36,7 +38,7 @@
 
             <el-tab-pane label="body" name="body">
               <el-input
-                v-model="itfDetails.bodyParamExample"
+                v-model="itfVO.bodyParamExample"
                 :rows="11"
                 type="textarea"
                 placeholder="请输入body参数, json格式"
@@ -73,34 +75,43 @@ import VueJsonPretty from "vue-json-pretty";
 import "vue-json-pretty/lib/styles.css";
 import { storeToRefs } from "pinia";
 import { ElMessage } from "element-plus";
+import LeftCountIncrement from "@/views/itf/info/components/left-count-increment/index.vue";
 
 defineOptions({ name: "ItfInvoke" });
 
-const { itfDetails } = storeToRefs(useItfStoreHook());
+const { itfVO } = storeToRefs(useItfStoreHook());
 const activeName = ref<string>("query");
 const respData = ref<object>();
+const loading = ref<boolean>(false);
 
 const handleItfInvoke = async () => {
   let queryParam = undefined;
   let bodyParam = undefined;
 
   try {
-    if (itfDetails.value.queryParamExample) {
-      queryParam = JSON.parse(itfDetails.value.queryParamExample);
+    if (itfVO.value.queryParamExample) {
+      queryParam = JSON.parse(itfVO.value.queryParamExample);
     }
-    if (itfDetails.value.bodyParamExample) {
-      bodyParam = JSON.parse(itfDetails.value.bodyParamExample);
+    if (itfVO.value.bodyParamExample) {
+      bodyParam = JSON.parse(itfVO.value.bodyParamExample);
     }
   } catch (e) {
     ElMessage.error("参数格式异常");
     return;
   }
 
-  respData.value = await reqInvokeItf({
-    id: useItfStoreHook().curItfId,
-    queryParam: queryParam,
-    bodyParam: bodyParam
-  });
+  loading.value = true;
+  try {
+    respData.value = await reqInvokeItf({
+      id: useItfStoreHook().curItfId,
+      queryParam: queryParam,
+      bodyParam: bodyParam
+    });
+    await useItfStoreHook().getUserItf();
+  } catch (e) {
+  } finally {
+    loading.value = false;
+  }
 };
 </script>
 

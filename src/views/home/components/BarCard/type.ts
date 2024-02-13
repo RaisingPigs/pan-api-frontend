@@ -1,4 +1,4 @@
-export type PieData = {
-  value: number,
-  name: string
+export type BarData = {
+  xData: string[],
+  yData: number[]
 }

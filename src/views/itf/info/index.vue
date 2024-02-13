@@ -54,13 +54,16 @@ import ItfExample from "@/views/itf/info/components/example/index.vue";
 import ItfInvoke from "@/views/itf/info/components/invoke/index.vue";
 import { useItfStore, useItfStoreHook } from "@/store/modules/itf";
 import { useRouter } from "vue-router";
+import { onMounted } from "vue";
 
 defineOptions({ name: "ItfInfo" });
 
 const itfStore = useItfStore();
 const router = useRouter();
 
-useItfStoreHook().getItfDetailsById(itfStore.curItfId);
+onMounted(() => {
+  useItfStoreHook().getItfDetailsById(itfStore.curItfId);
+});
 
 const handleTabChange = (tabPaneName: string) => {
   router.push({

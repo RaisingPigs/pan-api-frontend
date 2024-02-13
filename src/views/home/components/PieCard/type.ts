@@ -1,6 +1,4 @@
-export type StatisticCount = {
-  title: string
-  titleIcon: string
-  contentIcon: string
-  value: number
+export type PieData = {
+  value: number,
+  name: string
 }

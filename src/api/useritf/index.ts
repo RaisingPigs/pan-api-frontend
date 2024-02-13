@@ -18,12 +18,16 @@ export async function reqInvokeCountIncrement(data: UserItfAPI.InvokeCountReq) {
   );
 }
 
-export async function reqDeleteUserItf(id: number) {
+export async function reqDeleteUserItf(id: string) {
   return request.delete<any, BaseResponse<never>>(`/user-itf/delete/${id}`);
 }
 
-export async function reqGetUserItfById(id: number) {
-  return request.delete<any, BaseResponse<never>>(`/user-itf/get/${id}`);
+export async function reqGetUserItfById(id: string) {
+  return request.get<any, BaseResponse<UserItfAPI.UserItfVO>>(`/user-itf/get/${id}`);
+}
+
+export async function reqGetUserItfByItfId(itfId: string) {
+  return request.get<any, BaseResponse<UserItfAPI.UserItfVO>>(`/user-itf/get`, { params: { itfId } });
 }
 
 export async function reqListUserItf(data: UserItfAPI.UserItfQueryReq) {
@@ -42,4 +46,8 @@ export async function reqListUserItfByPage(data: UserItfAPI.UserItfQueryReq) {
 
 export async function reqUpdateUserItf(data: UserItfAPI.UserItfUpdateReq) {
   return request.put<any, BaseResponse<never>>("/user-itf/update", data);
+}
+
+export async function reqLeftCountIncrement(data: UserItfAPI.LeftCountReq) {
+  return request.put<any, BaseResponse<never>>("/user-itf/count-increment/left", data);
 }

@@ -67,14 +67,14 @@ declare namespace ItfAPI {
     name: string;
     path: string;
     url: string;
-    method: "GET" | "POST" | "PUT" | "DELETE";
+    method: number;
     description: string;
-    queryParamExample: object;
-    bodyParamExample: object;
-    respExample: object;
+    queryParamExample: string;
+    bodyParamExample: string;
+    respExample: string;
     reqHeader: string;
     respHeader: string;
-    status: "上线" | "下线";
+    status: number;
     createTime: string;
     updateTime: string;
   };
@@ -90,24 +90,12 @@ declare namespace ItfAPI {
   };
 
   type ItfDetailsVO = {
-    id?: string;
-    name?: string;
-    path?: string;
-    url?: string;
-    method?: number;
-    description?: string;
-    queryParamExample: string;
-    bodyParamExample: string;
-    respExample: object;
-    reqHeader?: string;
-    respHeader?: string;
-    status?: number;
-    createTime?: string;
-    updateTime?: string;
-    queryParam?: ParamVO[];
-    bodyParam?: ParamVO[];
-    commonResp?: ParamVO[];
-    respData?: ParamVO[];
+    itfVO: ItfVO,
+    userItfVO: UserItfAPI.UserItfVO,
+    queryParam: ParamVO[];
+    bodyParam: ParamVO[];
+    commonResp: ParamVO[];
+    respData: ParamVO[];
   };
 
   type ParamVO = {

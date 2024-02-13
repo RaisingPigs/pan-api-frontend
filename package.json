@@ -25,10 +25,8 @@
     "lint": "pnpm lint:eslint && pnpm lint:prettier",
     "prepare": "husky install",
     "test": "vitest",
-
     "build-no-tsc:test": "vite build --mode test",
     "preview-no-tsc:test": "pnpm build-no-tsc:test && vite preview",
-
     "build-no-tsc:prod": "vite build --mode production",
     "preview-no-tsc:prod": "pnpm build-no-tsc:prod && vite preview"
   },
@@ -36,6 +34,7 @@
     "@element-plus/icons-vue": "2.3.1",
     "axios": "1.6.5",
     "dayjs": "1.11.10",
+    "echarts": "^5.4.3",
     "element-plus": "2.5.2",
     "js-cookie": "3.0.5",
     "lodash-es": "4.17.21",
