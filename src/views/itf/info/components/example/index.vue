@@ -16,13 +16,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import { useItfStore } from "@/store/modules/itf";
-import { storeToRefs } from "pinia";
 import ItfDescCard from "@/components/ItfDescCard/index.vue";
 import TextareaCard from "@/components/TextareaCard/index.vue";
 import { TextareaData } from "@/components/TextareaCard/type";
-import LeftCountIncrement from "@/views/itf/info/components/left-count-increment/index.vue";
+import { computed } from "vue";
+import { storeToRefs } from "pinia";
 
 defineOptions({ name: "ItfExample" });
 
@@ -41,7 +40,7 @@ const textareaDataList = computed((): TextareaData[] => {
     },
     {
       title: "响应结果示例",
-      value:  itfVO.value.respExample
+      value: itfVO.value.respExample
     }
   ];
 });
