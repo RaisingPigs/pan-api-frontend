@@ -5,9 +5,9 @@
 
       <template v-for="(textareaData, index) in textareaDataList" :key="index">
         <TextareaCard
-          v-if="textareaData.value"
+          v-if="textareaData.content"
           :title="textareaData.title"
-          :value="textareaData.value"
+          :content="textareaData.content"
           :autosize="{ minRows: 1, maxRows: 20 }"
         />
       </template>
@@ -32,15 +32,15 @@ const textareaDataList = computed((): TextareaData[] => {
   return [
     {
       title: "query参数示例",
-      value: itfVO.value.queryParamExample
+      content: itfVO.value.queryParamExample
     },
     {
       title: "body参数示例",
-      value: itfVO.value.bodyParamExample
+      content: itfVO.value.bodyParamExample
     },
     {
       title: "响应结果示例",
-      value: itfVO.value.respExample
+      content: itfVO.value.respExample
     }
   ];
 });

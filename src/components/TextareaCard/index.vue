@@ -5,12 +5,17 @@
         <div class="params_header">
           <span>{{ title }}</span>
           <el-button @click="handleCopy" class="button" size="small" text
-            >复制</el-button
-          >
+            >复制
+          </el-button>
         </div>
       </template>
 
-      <el-input v-model="_val" type="textarea" readonly v-bind="$attrs" />
+      <el-input
+        :model-value="content"
+        type="textarea"
+        readonly
+        v-bind="$attrs"
+      />
     </el-card>
   </div>
 </template>
@@ -21,12 +26,12 @@ import { ElMessage } from "element-plus";
 
 defineOptions({ name: "TextareaCard" });
 
-const props = defineProps<{ title: string; value: string }>();
-const _val = props.value;
+const props = defineProps<{ title: string; content: string }>();
 
 const { toClipboard } = useClipboard();
+
 const handleCopy = async () => {
-  const res = await toClipboard(_val);
+  const res = await toClipboard(props.content);
   if (res) {
     ElMessage.success("复制成功");
   } else {
