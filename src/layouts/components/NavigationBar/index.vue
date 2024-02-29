@@ -1,3 +1,36 @@
+<template>
+  <div class="navigation-bar">
+    <Hamburger
+      v-if="!isTop || isMobile"
+      :is-active="sidebar.opened"
+      class="hamburger"
+      @toggle-click="toggleSidebar"
+    />
+    <Breadcrumb v-if="!isTop || isMobile" class="breadcrumb" />
+    <Sidebar v-if="isTop && !isMobile" class="sidebar" />
+    <div class="right-menu">
+      <SearchMenu v-if="showSearchMenu" class="right-menu-item" />
+      <Screenfull v-if="showScreenfull" class="right-menu-item" />
+      <ThemeSwitch v-if="showThemeSwitch" class="right-menu-item" />
+      <Notify v-if="showNotify" class="right-menu-item" />
+      <el-dropdown class="right-menu-item">
+        <div class="right-menu-avatar">
+          <el-avatar :icon="UserFilled" :size="30" />
+          <span>{{ userStore.loginUser?.name }}</span>
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="toUserInfoPage">个人信息</el-dropdown-item>
+            <el-dropdown-item divided @click="logout">
+              <span style="display: block">退出登录</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
+  </div>
+</template>
+
 <script lang="ts" setup>
 import { computed } from "vue";
 import { useRouter } from "vue-router";
@@ -42,45 +75,12 @@ const logout = async () => {
   await userStore.logout();
   router.push("/login");
 };
-</script>
 
-<template>
-  <div class="navigation-bar">
-    <Hamburger
-      v-if="!isTop || isMobile"
-      :is-active="sidebar.opened"
-      class="hamburger"
-      @toggle-click="toggleSidebar"
-    />
-    <Breadcrumb v-if="!isTop || isMobile" class="breadcrumb" />
-    <Sidebar v-if="isTop && !isMobile" class="sidebar" />
-    <div class="right-menu">
-      <SearchMenu v-if="showSearchMenu" class="right-menu-item" />
-      <Screenfull v-if="showScreenfull" class="right-menu-item" />
-      <ThemeSwitch v-if="showThemeSwitch" class="right-menu-item" />
-      <Notify v-if="showNotify" class="right-menu-item" />
-      <el-dropdown class="right-menu-item">
-        <div class="right-menu-avatar">
-          <el-avatar :icon="UserFilled" :size="30" />
-          <span>{{ userStore.loginUser?.name }}</span>
-        </div>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <a target="_blank" href="#">
-              <el-dropdown-item>GitHub</el-dropdown-item>
-            </a>
-            <a target="_blank" href="#">
-              <el-dropdown-item>Gitee</el-dropdown-item>
-            </a>
-            <el-dropdown-item divided @click="logout">
-              <span style="display: block">退出登录</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-    </div>
-  </div>
-</template>
+
+const toUserInfoPage = () => {
+  router.push({ name: "UserInfo" });
+};
+</script>
 
 <style lang="scss" scoped>
 .navigation-bar {

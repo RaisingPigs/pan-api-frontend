@@ -80,6 +80,27 @@ export const constantRoutes: RouteRecordRaw[] = [
  */
 export const asyncRoutes: RouteRecordRaw[] = [
   {
+    name: "LoginUser",
+    path: "/login-user",
+    component: Layouts,
+    redirect: "/login-user/user-info",
+    meta: {
+      title: "当前用户",
+      hidden: true,
+      roles: ["user"] // 可以在根路由中设置角色
+    },
+    children: [
+      {
+        name: "UserInfo",
+        path: "user-info",
+        component: () => import("@/views/user-info/index.vue"),
+        meta: {
+          title: "用户信息"
+        }
+      }
+    ]
+  },
+  {
     name: "Itf",
     path: "/itf",
     component: Layouts,
@@ -143,7 +164,6 @@ export const asyncRoutes: RouteRecordRaw[] = [
       title: "用户数据",
       elIcon: "Avatar",
       roles: ["admin"] // 可以在根路由中设置角色
-      // alwaysShow: true // 将始终显示根菜单
     },
     children: [
       {

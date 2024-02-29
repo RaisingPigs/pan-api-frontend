@@ -5,7 +5,7 @@
         v-for="(textareaData, index) in textareaDataList"
         :key="index"
         :title="textareaData.title"
-        :value="textareaData.value"
+        :content="textareaData.content"
         :autosize="{ minRows: 1, maxRows: 20 }"
       />
     </el-space>
@@ -27,6 +27,7 @@ const dependencyValue = `
 `;
 
 const ymlValue = `
+# access-key与secret-key在系统右上角用户名下拉菜单中的个人信息页面中查看
 pan-api:
   client:
     access-key: xxxxxxxx
@@ -34,49 +35,50 @@ pan-api:
 `;
 
 const getValue = `
-@Resource
-private ItfClient itfClient;
+private final ItfClient itfClient;
 
-public String testGet() {
-    Map<String, String> map = new HashMap<>();
-    map.put("name", "张三");
-    String s = itfClient.doGet("http://localhost:8888/api/itf/name/get", map);
-    return s;
+public void testGet() {
+    Map<String, Object> map = new HashMap<>();
+    map.put("weight", 70);
+    map.put("height", 1.80);
+
+    String json = itfClient.doGet("http://panapi.raisingpigs.icu:8888/api/itf/calculate/bmi", map);
+    System.out.println(json);  // {"code":20000,"data":{"bmi":21.6,"level":"正常","normalBMI":"18.5 ~ 23.9"},"msg":"success"}
 }
 `;
 
 const postValue = `
 @Resource
 private ItfClient itfClient;
-private final ObjectMapper objectMapper;
 
-public String testPost() throws JsonProcessingException {
-    Map<String, String> map = new HashMap<>();
-    map.put("name", "张三");
-    Map<String, String> map1 = new HashMap<>();
-    map1.put("username", "李四");
-    String json = objectMapper.writeValueAsString(map1);
-    String s = itfClient.doPost("http://localhost:8888/api/itf/name/post", map, json);
-    return s;
+public void testPost() {
+    Map<String, Object> queryParams = new HashMap<>();
+    queryParams.put("query参数1", "参数值");
+
+    Map<String, Object> bodyParam = new HashMap<>();
+    bodyParam.put("body参数1", "参数值");
+
+    String json = itfClient.doPost("http://panapi.raisingpigs.icu:8888/api/itf/xxx", queryParams, bodyParam);
+    System.out.println(json);
 }
 `;
 
 const textareaDataList: TextareaData[] = [
   {
     title: "依赖引入",
-    value: dependencyValue
+    content: dependencyValue
   },
   {
     title: "yml配置",
-    value: ymlValue
+    content: ymlValue
   },
   {
     title: "get调用",
-    value: getValue
+    content: getValue
   },
   {
     title: "post调用",
-    value: postValue
+    content: postValue
   }
 ];
 </script>

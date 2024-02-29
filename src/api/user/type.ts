@@ -53,4 +53,17 @@ declare namespace UserAPI {
   type AccessKeyReq = {
     accessKey?: string;
   };
+
+  type UserAkSkVO = {
+    id: string;
+    name: string;
+    username: string;
+    avatar: string;
+    gender: string;
+    role: string;
+    accessKey: string;
+    secretKey: string;
+    createTime: string;
+    updateTime: string;
+  };
 }

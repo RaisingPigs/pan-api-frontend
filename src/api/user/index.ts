@@ -30,3 +30,7 @@ export async function reqListUserByPage(data: UserAPI.UserQueryReq) {
 export async function reqUpdateUser(data: UserAPI.UserUpdateReq) {
   return request.put<any, BaseResponse<never>>("/user/update", data);
 }
+
+export async function reqGetUserWithAkSk() {
+  return request.post<any, BaseResponse<UserAPI.UserAkSkVO>>(`/user/ak-sk`);
+}
