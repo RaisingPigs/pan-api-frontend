@@ -72,8 +72,8 @@ const loading = ref(false);
 
 /** 登录表单数据 */
 const loginFormData: LoginAPI.UserLoginReq = reactive({
-  username: "111111",
-  password: "111111"
+  username: "",
+  password: ""
 });
 /** 登录表单校验规则 */
 const loginFormRules: FormRules = {
