@@ -80,6 +80,27 @@ export const constantRoutes: RouteRecordRaw[] = [
  */
 export const asyncRoutes: RouteRecordRaw[] = [
   {
+    name: "Statistic",
+    path: "/statistic",
+    component: Layouts,
+    redirect: "/statistic/data-statistic",
+    meta: {
+      title: "数据统计",
+      elIcon: "DataAnalysis"
+    },
+    children: [
+      {
+        name: "dataStatistic",
+        path: "data-statistic",
+        component: () => import("@/views/statistic/index.vue"),
+        meta: {
+          title: "数据统计",
+          elIcon: "DataAnalysis"
+        }
+      }
+    ]
+  },
+  {
     name: "LoginUser",
     path: "/login-user",
     component: Layouts,
