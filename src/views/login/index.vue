@@ -44,6 +44,17 @@
           </el-button>
         </el-form>
       </div>
+      <div v-if="thirdUrlList" class="login-3rd">
+        <el-text>其他登录方式:</el-text>
+        <a
+          href="#"
+          v-for="(thirdUrl, index) in thirdUrlList"
+          @click.prevent="handleLoginBy3rd(thirdUrl.loginUrl)"
+          :key="index"
+        >
+          <SvgIcon style="width: 1.5em; height: 1.5em" :name="`${thirdUrl.loginType}-logo`" />
+        </a>
+      </div>
       <div class="register">
         <el-link @click="toRegister" type="primary">没有账号? 去注册</el-link>
       </div>
@@ -52,13 +63,14 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/modules/user";
 import { type FormInstance, type FormRules } from "element-plus";
 import { Lock, User } from "@element-plus/icons-vue";
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue";
 import Logo from "@/components/Logo/index.vue";
+import { reqGetThirdLoginUrl } from "@/api/login";
 
 defineOptions({ name: "Login" });
 
@@ -108,6 +120,22 @@ const handleLogin = async () => {
 const toRegister = () => {
   router.push({ name: "Register" });
 };
+
+const thirdUrlList = ref<LoginAPI.ThirdUrlVO[]>();
+
+const getLogin3rdUrl = async () => {
+    const res: BaseResponse<LoginAPI.ThirdUrlVO[]> = await reqGetThirdLoginUrl();
+
+    thirdUrlList.value = res?.data;
+};
+
+const handleLoginBy3rd = (loginUrl: string) => {
+  window.location.href = loginUrl;
+};
+
+onMounted(() => {
+  getLogin3rdUrl();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -168,6 +196,16 @@ const toRegister = () => {
       .el-button {
         width: 100%;
         margin-top: 10px;
+      }
+    }
+
+    .login-3rd {
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+
+      & a {
+        margin-left: 5px;
       }
     }
 

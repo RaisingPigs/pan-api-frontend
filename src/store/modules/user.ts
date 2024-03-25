@@ -5,7 +5,7 @@ import { useTagsViewStore } from "./tags-view";
 import { useSettingsStore } from "./settings";
 import { getToken, removeToken, setToken } from "@/utils/cache/cookies";
 import { resetRouter } from "@/router";
-import { reqLogin, reqLoginUser, reqLogout, reqRegister } from "@/api/login";
+import { reqLogin, reqLoginByGitee, reqLoginUser, reqLogout, reqRegister } from "@/api/login";
 
 export const useUserStore = defineStore("user", () => {
   const token = ref<string>(getToken() || "");
@@ -23,6 +23,11 @@ export const useUserStore = defineStore("user", () => {
   /** 登录 */
   const login = async (loginForm: LoginAPI.UserLoginReq) => {
     const res: BaseResponse<string> = await reqLogin(loginForm);
+    setToken(res.data);
+    token.value = res.data;
+  };
+  const loginByGitee = async (data: LoginAPI.Login3rdReq) => {
+    const res: BaseResponse<string> = await reqLoginByGitee(data);
     setToken(res.data);
     token.value = res.data;
   };
@@ -73,6 +78,7 @@ export const useUserStore = defineStore("user", () => {
     roles,
     setRoles,
     login,
+    loginByGitee,
     register,
     getLoginUser,
     logout,

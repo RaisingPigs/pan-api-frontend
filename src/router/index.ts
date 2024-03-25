@@ -47,6 +47,14 @@ export const constantRoutes: RouteRecordRaw[] = [
     }
   },
   {
+    name: "Login3rdLoading",
+    path: "/login3rd-loading",
+    component: () => import("@/views/login3rd-loading/index.vue"),
+    meta: {
+      hidden: true
+    }
+  },
+  {
     name: "Register",
     path: "/register",
     component: () => import("@/views/register/index.vue"),

@@ -6,7 +6,9 @@ enum URL {
   LOGIN = "/sys/login",
   REGISTER = "/sys/register",
   GET_LOGIN_USER = "/sys/user",
-  LOGOUT = "/sys/logout"
+  LOGOUT = "/sys/logout",
+  GET_THIRD_LOGIN_URL = "/sys/login/3rd-url",
+  GITEE_LOGIN_URL = "/sys/login/gitee"
 }
 
 //登录接口
@@ -22,3 +24,8 @@ export const reqLogout = async () => request.post<never, never>(URL.LOGOUT);
 
 export const reqRegister = async (data: LoginAPI.UserRegisterReq) =>
   request.post(URL.REGISTER, data);
+
+export const reqGetThirdLoginUrl = async () => request.get<never, BaseResponse<LoginAPI.ThirdUrlVO[]>>(URL.GET_THIRD_LOGIN_URL);
+
+export const reqLoginByGitee = async (data: LoginAPI.Login3rdReq) =>
+  request.post<LoginAPI.Login3rdReq, BaseResponse<string>>(URL.GITEE_LOGIN_URL, data);

@@ -9,4 +9,14 @@ declare namespace LoginAPI {
     password: string;
     checkPassword: string;
   };
+
+  type ThirdUrlVO = {
+    loginType: string;
+    loginUrl: string;
+  }
+
+  type Login3rdReq = {
+    code: string;
+    state: string;
+  }
 }

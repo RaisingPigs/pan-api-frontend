@@ -35,7 +35,7 @@ router.beforeEach(async (to, _from, next) => {
   }
 
   // 如果已经登录，并准备进入 Login 页面，则重定向到主页
-  if (to.path === "/login") {
+  if (to.path === "/login" || to.path === "/login3rd-loading" || to.path === "/register") {
     NProgress.done();
     return next({ path: "/" });
   }
