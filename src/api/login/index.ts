@@ -25,7 +25,7 @@ export const reqLogout = async () => request.post<never, never>(URL.LOGOUT);
 export const reqRegister = async (data: LoginAPI.UserRegisterReq) =>
   request.post(URL.REGISTER, data);
 
-export const reqGetThirdLoginUrl = async () => request.get<never, BaseResponse<LoginAPI.ThirdUrlVO[]>>(URL.GET_THIRD_LOGIN_URL);
+export const reqGetThirdLoginUrl = async (data: number) => request.get<never, BaseResponse<string>>(`${URL.GET_THIRD_LOGIN_URL}/${data}`);
 
 export const reqLoginByGitee = async (data: LoginAPI.Login3rdReq) =>
   request.post<LoginAPI.Login3rdReq, BaseResponse<string>>(URL.GITEE_LOGIN_URL, data);

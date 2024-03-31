@@ -44,15 +44,13 @@
           </el-button>
         </el-form>
       </div>
-      <div v-if="thirdUrlList" class="login-3rd">
+      <div class="login-3rd">
         <el-text>其他登录方式:</el-text>
         <a
           href="#"
-          v-for="(thirdUrl, index) in thirdUrlList"
-          @click.prevent="handleLoginBy3rd(thirdUrl.loginUrl)"
-          :key="index"
+          @click.prevent="handleLoginBy3rd(1)"
         >
-          <SvgIcon style="width: 1.5em; height: 1.5em" :name="`${thirdUrl.loginType}-logo`" />
+          <SvgIcon style="width: 1.5em; height: 1.5em" name="gitee-logo" />
         </a>
       </div>
       <div class="register">
@@ -63,7 +61,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/modules/user";
 import { type FormInstance, type FormRules } from "element-plus";
@@ -121,21 +119,10 @@ const toRegister = () => {
   router.push({ name: "Register" });
 };
 
-const thirdUrlList = ref<LoginAPI.ThirdUrlVO[]>();
-
-const getLogin3rdUrl = async () => {
-    const res: BaseResponse<LoginAPI.ThirdUrlVO[]> = await reqGetThirdLoginUrl();
-
-    thirdUrlList.value = res?.data;
+const handleLoginBy3rd = async (type: number) => {
+  const res: BaseResponse<string> = await reqGetThirdLoginUrl(type);
+  window.location.href = res.data;
 };
-
-const handleLoginBy3rd = (loginUrl: string) => {
-  window.location.href = loginUrl;
-};
-
-onMounted(() => {
-  getLogin3rdUrl();
-});
 </script>
 
 <style lang="scss" scoped>
